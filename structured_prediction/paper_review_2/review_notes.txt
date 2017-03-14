@@ -1,0 +1,52 @@
+-- introduction --
+Micro-reading - complex reasoning over a single document.
+Most work in the area of Machine Learning has been in macro-reading.
+Macro-reading is the task of using a large corpora with redundancy to answer a question.
+The goal of this paper is to understand the relations between entities and events in a process.
+A structure is predicted which is a rich representation of the the relationship.
+The authors show that these rich structures provide improvements over a more shallow representaiton.
+
+-- Strengths --
+Micro-reading allows for us to answer more difficult questions compared to macro-reading.
+Difficult questions are non-factioid questions where the answer doesn't appear a redundant number of times in the text corpus.
+If we have the golden structure, we achive pretty good performance (76.7%).
+Questions were authored independently of structure annotation.
+Golden labels were created by high agreement between the two annotators and indepdenent of the author of the questions.
+Description of the goal of the paper, annotation, algorithm, and experiment is very clear and easy to follow.
+The audience I presume would be computer scientists and biologists and sufficient background is provided so both audiences can follow the paper.
+"Developing programs that perform deep reasoning over complex descriptions of processes is an important goal for machine reading."
+First system to predict events, agruments and their interactions.
+Utilizing this structure for answering reading comprehension questions.
+
+
+-- Weaknesses --
+"One reason for low performance is the small size of the dataset" - relies on a larger annotated text corpus.
+Annotation is expensive - need a domain expert.
+We have seen that having the golden structure is imparative to getting good results.
+Performance on argument and relation prediction is low.
+An explanation for this is errors in trigger identification propagate onto argument and relation prediction.
+Having the proper structures contributes to an impressive 10% gain in performance.
+
+-- experiments --
+Training - 150 processes (435 questions)
+Testing - 40 processes (150 questions)
+Preprocessing with off-the-shelf
+Gurobi for inference
+3 different baselines that have no access to the process structure.
+BOW - Bag of words, simple statistics on word similarity between the paragraph and questions.
+TEXTPROX - Using word ordering to calculate proximity.
+SYNTPROX - Using dependency tree edges to calculate proximity.
+To demonstrate how the system performs given the golden structure, experiments were ran with the golden structure.
+This separates the performance of the overall system and the performance of the structure prediction.
+TODO
+
+
+-- future work --
+Semi-supervised approaches that have good performance on a small ammount of annotated data (bootstrapping perhaps?)
+This work demonstrates that having rich structures is vital performance on difficult to answer micro-reading tasks.
+Could this be combined with another system to answer these difficult questions without having the two possible correct answers to choose from.
+A thought would be to combine it with a system that generates a pool of possible correct answers and this pool could be compared by this system.
+Expand the set of regular expressions. In 10% of the cases the gold structures, the answer count not be retrieved using the set of REs.
+Training a statistical semantic parser that will replace the QA system. (author's suggestion)
+
+-- closing thoughts -- 

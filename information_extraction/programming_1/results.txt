@@ -1,0 +1,14 @@
+Here are the accuracy results that you should get for each 
+ftype argument: 
+
+word:    88.3149%
+wordcap: 87.6986%
+poscon:  87.9428%
+lexcon:  89.0241%
+bothcon: 88.8458%
+
+NOTE: the classifier may take some time to train, especially as more
+features are given to it. We estimate that it may take roughly 1
+minute to train for lexcon, and 2 minutes to train for bothcon, but
+your mileage may vary depending on your computing platform.
+

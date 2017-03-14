@@ -1,0 +1,164 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Sectioned Essay
+% LaTeX Template
+% Version 1.0 (3/8/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original Author:
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, 11pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
+
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{graphicx} % Required for including pictures
+\usepackage{wrapfig} % Allows in-line images
+\usepackage{float}
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
+
+\renewcommand{\maketitle}{ % Customize the title - do not edit title and author name here, see the TITLE block below
+\begin{flushright} % Right align
+{\LARGE\@title} % Increase the font size of the title
+
+\vspace{50pt} % Some vertical space between the title and author name
+
+{\large\@author} % Author name
+\\\@date % Date
+
+\vspace{40pt} % Some vertical space between the author block and abstract
+\end{flushright}
+}
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{Basic System - Reading Comprehension on Short Passages for Question Answering}\\ % Title
+} % Subtitle
+
+\author{\textsc{Jake Pitkin} % Author
+\\{\textit{CS 6390 - Information Extraction}}} % Institution
+
+\date{\today} % Date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT AND KEYWORDS
+%----------------------------------------------------------------------------------------
+
+%\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
+
+
+%----------------------------------------------------------------------------------------
+%	ESSAY BODY
+%----------------------------------------------------------------------------------------
+\section*{Introduction}
+
+For my project I am going to explore a machine reading task. Given a short passage, the task is to answer a question, where the question is a span from the passage. Most work in the field of machine reading has focused on macro-reading: using massive corpora to answer factoid questions. This approach leverages the fact that the answer appears a redundant number of times. For my task, this isn't an option as the passages are typically a single paragraph. Instead this micro-reading task will need to leverage the structure of the dependency and constituency trees.
+
+I will be using the SQuAD (Stanford Question Answering Dataset) (Rajpurkar et. al, 2016) dataset for this task. They provide 100,000+ labeled examples corresponding to 500+ articles. (\textit{https://rajpurkar.github.io/SQuAD-explorer/})
+ 
+%------------------------------------------------
+
+\section*{Approach}
+
+Due to time restraints, my basic system will be taking the approach of using lexical coverage. For each noun phrase in the passage, I determine how much word overlap the sentence the noun phrase appears in (ignoring the noun phrase) has with the question. The answer is chosen as the noun phrase with the most overlap. Character case is normalized and very frequent words are removed. 
+
+Over Spring Break, I'm going to overhaul my system and build a machine learning classifier which features that capture the structure of the passage using the dependency and constituency trees. This will allow me to fully leverage the large amount of annotated training data.
+
+\section*{Technical Design}
+
+My project is written in Python 3 and uses the \textbf{Stanford CoreNLP} \newline (\textit{http://stanfordnlp.github.io/CoreNLP/}) and \textbf{NLTK} (\textit{http://www.nltk.org/}) NLP toolsets. I use CoreNLP to predict dependency trees (to be used to my final system). NLTK is used to split the passages into sentences and tokenize each sentence as well as to find all the noun phrases in the passage.
+
+The system design is organized as follows: 
+
+\begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+File Name & Description\\
+\hline
+\texttt{main.py} & program entry point\\ \hline
+\texttt{ioutil.py} & I/O utilities\\ \hline
+\texttt{nlptools.py} & API for various NLP tools\\ \hline
+\texttt{evaluate-v1.1.py} & evaluates accuracy and F1 of predictions \\ \hline
+\texttt{predict.sh} & script to run system and produce predictions\\ \hline
+\texttt{evaluate.sh} & script to evaluate the predictions\\ \hline
+\end{tabular}}
+\end{table}
+
+\section*{Evaluation Results}
+
+I will be using 87,599 examples as training data (80\%), 10,570 examples for development (10\%) and 10,570 examples for testing (10\%). Along with the dataset, an evaluation script was provided with the dataset I am using. It reports the percent of exact matches along with an F1 score.
+
+I evaluated my basic system using the development data and compared to the results of making a random guess, a logistic regression model, and a human baseline provided by the paper accompanying the dataset (Rajpurkar et. al, 2016)
+
+\begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c | c | c |}
+\hline
+Approach & Dataset & Accuracy & F1-Score\\
+\hline
+My System & Dev & 5.8\% & 10.7\%\\ \hline
+Random Guess & Dev & 1.1\% & 4.1\%\\ \hline
+Logistic Regression & Dev & 40\% & 51\%\\ \hline
+Human Baseline & Dev & 80.3\% & 90.5\%\\ \hline
+\end{tabular}}
+\end{table}
+
+These results make it clear that this task requires deeper understanding of the structure of the passages than my basic system provides. It demonstrates better performance than taking a random guess but is behind the ML model by a large margin. Other more subtle limitations include a preference towards noun phrases in longer sentences and the case when the answer to the question is not a noun phrase. My system has a long way to go, but I have good ideas about the direction to take my development and I am optimistic about future results.
+
+\section*{Appendix}
+
+Here I provide an example passage with an accompanying question and answer. The passages are separated into sentences and noun phrases are extracted (noun phrases are in bold). Finally, each sentence containing a candidate noun phrase is compared to the question to determine overlap.  \bigskip
+
+
+\textit{Passage:} When suffering from sleep deprivation, active immunizations may have a diminished effect and may result in lower antibody production, and a lower immune response, than would be noted in a well-rested individual. Additionally, proteins such as NFIL3, which have been shown to be closely intertwined with both T-cell differentiation and our circadian rhythms, can be affected through the disturbance of natural light and dark cycles through instances of sleep deprivation, shift work, etc. As a result, these disruptions can lead to an increase in chronic conditions such as heart disease, chronic pain, and asthma. \bigskip
+
+\textit{Question:}  What kind of deprivation results in diminished immune response and lower antibody production? \bigskip 
+
+\textit{Answer:} sleep deprivation \bigskip
+
+\textit{Sentence 1:} 'When suffering from \textbf{sleep deprivation}, active \textbf{immunizations} may have \textbf{a diminished effect} and may result in lower \textbf{antibody} \textbf{production}, and a lower \textbf{immune response}, than would be noted in \textbf{a well-rested individual}.' \bigskip
+
+\textit{Sentence 2:} 'Additionally, \textbf{proteins} such as \textbf{NFIL3}, which have been shown to be closely intertwined with both \textbf{T-cell differentiation} and our \textbf{circadian rhythms}, can be affected through \textbf{the disturbance} of \textbf{natural light} and dark \textbf{cycles} through \textbf{instances} of \textbf{sleep deprivation}, \textbf{shift work}, etc.' \bigskip
+
+\textit{Sentence 3:} 'As \textbf{a result}, these \textbf{disruptions} can lead to \textbf{an increase} in chronic \textbf{conditions} such as \textbf{heart disease}, \textbf{chronic pain}, and \textbf{asthma}.' \bigskip
+
+\textit{Predicted answer:} sleep deprivation \bigskip
+
+\textit{Overlap with question:} 8 words
+
+
+\section*{References}
+
+Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and
+Percy Liang. 2016. \hspace*{1em} Squad: 100,000+ questions
+for machine comprehension of text. arXiv \hspace*{1em} preprint
+arXiv:1606.05250.
+
+\end{document}

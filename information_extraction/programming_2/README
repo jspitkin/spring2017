@@ -1,0 +1,17 @@
+Jake Pitkin
+u0891770
+CS6390 - Information Extraction
+
+=== Running My Code ===
+
+My program is written in Python 3. To run my code on a CADE machine move into the directory with dirt.py and run 
+
+'python3 dirt.py <corpus_file> <test_file> <minfreq>'
+
+I have included a shell script 'run.sh' which will run the provided example. Also 'example.trace' is a trace of it's output.
+
+=== CADE Machine ===
+
+I developed and tested my code on CADE machine lab1-19. To my knowledge, there are no known limitations or bugs.
+
+Thanks!

@@ -1,0 +1,27 @@
+Jake Pitkin
+u0891770
+Information Extraction CS6390
+Spring 2017
+
+========== How To Use ========
+The code to generate feature vectors for the NER classifier is written in Python3 and is all contained in ner.py.
+It can be used manually using the command: "python3 ner.py <training-file> <test-file> <ftype>".
+Additionally I have provided six shell scripts that can be ran using: "sh <shell-file-name>".
+These scripts will create the feature vectors, train a classifier, make predictions and print the accuracy to the console.
+
+word_run.sh    - Runs with an ftype of 'word'.
+wordcap_run.sh - Runs with an ftype of 'wordcap'.
+poscon_run.sh  - Runs with an ftype of 'poscon'.
+lexcon_run.sh  - Runs with an ftype of 'lexcon'.
+bothcon_run.sh - Runs with an ftype of 'bothcon'.
+run_all.sh     - Runs all five ftypes.
+
+========= Testing ==========
+My development and testing was on CADE machine lab1-18. There are no known bugs, problems or limitations of my program.
+I notice my accuracy results for 'poscon' and 'bothcon' sometimes come up slightly different if I run them multiple times.
+My hypothesis is this has to do with an arbitrary decision being made in the linear regression software.
+Most of the time, they return the exact expected accuracies.
+
+
+======== Contact ==========
+If you run into trouble running my code, don't hesitate to contact me at jakepitkin@gmail.com. Thanks!

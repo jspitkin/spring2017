@@ -64,7 +64,9 @@ For this problem, let $f$ be a convex function defined over a convex set $K$, an
 \part{b} Consider the function $f(x, y) = x^2 + \frac{y^2}{4}$, and suppose we run gradient descent with starting point $(1, 1)$, and $\eta = 1/4$. Do we get arbitrarily close to the minimum? Experimentally, find the \textit{threshold} for $\eta$, beyond which the gradient descent starts to oscillate.
 
 \fbox{ \parbox{1\linewidth}{
+Given the function $f(x, y) = x^2 + \frac{y^2}{4}$ with a starting point of $\mathbf{w}^{(1)} = (1, 1)$ and $\eta = 1/4$ we get arbitrarily close to the minimum. The minimum of $f(x, y)$ is 0 when $\mathbf{w} = (0, 0)$. To explore this gradient descent scenario, I wrote a program to calculate $\mathbf{w}^{(t)}$ and defined arbitrarily close to being within $0.0001$ of the minimum. I found after 30 steps that $\mathbf{w}^{(30)} = (0.1862\mathrm{e}{-09}, 0.0208)$ and $f(x, y) = 0.0001$. \\
 
+Again using code, I found an upper-bound for $\eta$. I found the gradient descent starts to oscillate when $\eta \geq 1$. When $\eta = 1$, the behavior is interesting. The $x$ component of $\mathbf{w}^{(t)}$ alternates between the values $1$ and $-1$ (as the partial derivative is $2x$) and the $y$ component converges to $0$. As such, $f(x, y)$ oscillates between $-1$ and $1$. For $\eta > 1$, $f(x, y)$ converges to infinity as $x$ alternates between increasingly large positive and negative numbers (which are squared by $f(x, y)$).
 } }
 
 \part{c} Why is the behavior similar to that in part (a) (oscillation for every $\eta$) not happening in part (b)?

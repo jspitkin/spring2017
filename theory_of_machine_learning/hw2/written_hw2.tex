@@ -58,20 +58,56 @@ For this problem, let $f$ be a convex function defined over a convex set $K$, an
 \part{a} Give an example of a function defined over $\mathbb{R}$, for which for \textit{any} step-size $\eta > 0$ (no matter how small), gradient descent with step-size $\eta$ oscillates around the optimum point (i.e., never gets to distance $< \eta/4$ to it), for some starting point $x \in \mathbb{R}$.
 
 \fbox{ \parbox{1\linewidth}{
+Consider the absolute value function $g(x) = |x|$ defined over $\mathbb{R}$.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.4\linewidth]{abs.png}}
+\end{figure}
+
+The absolute value function is convex but it is not smooth. It is not differentiable as the derivative at $x = 0$ is not defined. For any arbitrarily small step-size $\eta$, we can find a starting point $x \in \mathbb{R}$ such that gradient descent will oscillate around the optimum point (never getting to distance $< \eta /4$ to it). \\
+
+Each iteration gradient descent takes a step in the direction of the negative gradient at the current point, with a step-size of $\eta$.
+
+$$\mathbf{w}^{(t + 1)} = \mathbf{w}^{(t)} - \eta \nabla g(\mathbf{w}^{(t)})$$
+
+The $\nabla g(x)$ is defined as
+
+$$
+\nabla g(x) = \left\{
+        \begin{array}{ll}
+            -1 & \quad x < 0 \\
+            undefined & \quad x = 0 \\
+            1 & \quad x > 0
+        \end{array}
+    \right.
+$$
+
+As such, we can see at each iteration of gradient descent we will take a $ \eta$ sized step from the current point. This step will be in the positive direction if $x$ is negative and vice-versa. Thus, regardless of how small $\eta$ is, we can easily arrive at a situation where gradient descent will oscillate around the optimum point found at the origin.
 
 } }
 
 \part{b} Consider the function $f(x, y) = x^2 + \frac{y^2}{4}$, and suppose we run gradient descent with starting point $(1, 1)$, and $\eta = 1/4$. Do we get arbitrarily close to the minimum? Experimentally, find the \textit{threshold} for $\eta$, beyond which the gradient descent starts to oscillate.
 
 \fbox{ \parbox{1\linewidth}{
-Given the function $f(x, y) = x^2 + \frac{y^2}{4}$ with a starting point of $\mathbf{w}^{(1)} = (1, 1)$ and $\eta = 1/4$ we get arbitrarily close to the minimum. The minimum of $f(x, y)$ is 0 when $\mathbf{w} = (0, 0)$. To explore this gradient descent scenario, I wrote a program to calculate $\mathbf{w}^{(t)}$ and defined arbitrarily close to being within $0.0001$ of the minimum. I found after 30 steps that $\mathbf{w}^{(30)} = (0.1862\mathrm{e}{-09}, 0.0208)$ and $f(x, y) = 0.0001$. \\
+Given the function $f(x, y) = x^2 + \frac{y^2}{4}$ with a starting point of $\mathbf{w}^{(1)} = (1, 1)$ and $\eta = 1/4$ we get arbitrarily close to the minimum. The minimum of $f(x, y)$ is 0 when $\mathbf{w} = (0, 0)$. To explore this gradient descent scenario, I wrote a program to calculate $\mathbf{w}^{(t)}$ and defined arbitrarily close to being within $0.0001$ of the minimum. I found after 39 steps that $\mathbf{w}^{(39)} = (3.6379\mathrm{e}{-12}, 0.0063)$ and $f(x, y) = 9.7848\mathrm{e}{-06}$. Given enough iterations, the gradient descent found the optimum point. \\
 
-Again using code, I found an upper-bound for $\eta$. I found the gradient descent starts to oscillate when $\eta \geq 1$. When $\eta = 1$, the behavior is interesting. The $x$ component of $\mathbf{w}^{(t)}$ alternates between the values $1$ and $-1$ (as the partial derivative is $2x$) and the $y$ component converges to $0$. As such, $f(x, y)$ oscillates between $-1$ and $1$. For $\eta > 1$, $f(x, y)$ converges to infinity as $x$ alternates between increasingly large positive and negative numbers (which are squared by $f(x, y)$).
+Using a program, I found the threshold for $\eta$. I found the gradient descent starts to oscillate when $\eta \geq 1$. When $\eta = 1$, the behavior is interesting. The $x$ component of $\mathbf{w}^{(t)}$ alternates between the values $1$ and $-1$ and the $y$ component converges to $0$. As such, $f(x, y)$ oscillates between $-1$ and $1$.
 } }
 
 \part{c} Why is the behavior similar to that in part (a) (oscillation for every $\eta$) not happening in part (b)?
 
 \fbox{ \parbox{1\linewidth}{
+In part (a) we observed that the absolute value function $g(x) = |x|$ oscillates around the optimum point despite choosing an arbitrarily small step-size $\eta$. In part (b) we concluded that $f(x, y) = x^2 + \frac{y^2}{4}$ with reach the optimum point given a step-size $\eta < 1$. \\
+
+If we consider the gradient of $f(x, y)$ which is defined as 
+
+$$\nabla f(x, y) = (2x, \frac{y}{2})$$
+
+and the update for each iteration of gradient descent
+
+$$\mathbf{w}^{(t + 1)} = \mathbf{w}^{(t)} - \eta \nabla f(\mathbf{w}^{(t)})$$
+
+We can observe that $\mathbf{w}^{(t + 1)}$ is dependent on the value of $x_t$, $y_t$, and a fixed $\eta$. As $x_t$ and $y_t$ get closer to 0, the update "size" at each iteration decreases (since $\vert \vert \nabla f(x, y) \vert \vert$ decreases). This was not the case with $g(x)$, as the direction of the update is dependent on $x$ but the "size" of the update is only dependent on $\eta$. Thus, with a reasonably small $\eta$, $f(x, y)$ will reach the optimum point.
 
 } }
 

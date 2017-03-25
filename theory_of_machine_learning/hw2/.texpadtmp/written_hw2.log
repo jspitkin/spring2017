@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  25 MAR 2017 15:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  25 MAR 2017 17:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -262,12 +262,17 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 36.
  (/usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 76--76
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 70--71
+[][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--97
 
  []
 
 
-Overfull \hbox (14.09998pt too wide) in paragraph at lines 76--77
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 97--98
 [][]  
  []
 
@@ -276,67 +281,87 @@ Overfull \hbox (14.09998pt too wide) in paragraph at lines 76--77
 ] <abs.png, id=13, 232.87pt x 167.62625pt>
 File: abs.png Graphic file (type png)
  <use abs.png>
-Package pdftex.def Info: abs.png used on input line 109.
+Package pdftex.def Info: abs.png used on input line 130.
 (pdftex.def)             Requested size: 187.89914pt x 135.25983pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--109
+Underfull \hbox (badness 10000) in paragraph at lines 130--130
 
  []
 
 
-Overfull \hbox (14.09998pt too wide) in paragraph at lines 109--110
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 130--131
+[][]  
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+
+ []
+
+
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 138--139
+[][]  
+ []
+
+[3 <./abs.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 155--155
+
+ []
+
+
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 155--156
 [][]  
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 117--117
+Underfull \hbox (badness 10000) in paragraph at lines 173--173
 
  []
 
 
-Overfull \hbox (14.09998pt too wide) in paragraph at lines 117--118
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 173--174
 [][]  
  []
 
-[2 <./abs.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 134--134
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
 
  []
 
 
-Overfull \hbox (14.09998pt too wide) in paragraph at lines 134--135
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 222--222
+
+ []
+
+
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 222--223
 [][]  
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 152--152
-
- []
-
-
-Overfull \hbox (14.09998pt too wide) in paragraph at lines 152--153
-[][]  
- []
-
-[3]
-Missing character: There is no Ï in font cmr10!
-Missing character: There is no µ in font cmr10!
-Missing character: There is no Ï in font cmr10!
-Missing character: There is no µ in font cmr10!
- [4] [5] [6] (/Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.aux) ) 
+[5] [6] [7] (/Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.aux) ) 
 Here is how much of TeX's memory you used:
  3116 strings out of 493014
  42174 string characters out of 6133351
- 115742 words of memory out of 5000000
+ 116742 words of memory out of 5000000
  6609 multiletter control sequences out of 15000+600000
  9563 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 38i,11n,43p,651b,256s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,11n,43p,672b,256s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on /Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.pdf (6 pages, 153701 bytes).
+Output written on /Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.pdf (7 pages, 157894 bytes).
 PDF statistics:
- 70 PDF objects out of 1000 (max. 8388607)
- 48 compressed objects within 1 object stream
+ 75 PDF objects out of 1000 (max. 8388607)
+ 52 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

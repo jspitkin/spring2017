@@ -45,6 +45,27 @@ For this problem, let $f$ be a convex function defined over a convex set $K$, an
 
 \fbox{ \parbox{1\linewidth}{
 
+From the lecture 7 scribe notes we have the following property of convex functions
+
+$$f(y) - f(x) \geq \langle y - x, \nabla f(x) \rangle \ \ \forall x, y$$
+
+We will apply this property to a unique $x^* \in K$ and any other point $x \in K$
+
+$$f(x^*) - f(x) \geq \langle x^* - x, \nabla f(x) \rangle $$
+
+Our goal is to show $\langle \nabla f(x), x - x^* \rangle \geq 0$, so we will multiply both sides by $-1$ to change the direction of the inequality
+
+$$- \langle x^* - x, \nabla f(x) \rangle \geq f(x) - f(x^*)$$
+
+Applying the commutative property of dot products and distributing the negative gives us
+
+$$\langle \nabla f(x), x - x^* \rangle \geq f(x) - f(x^*)$$
+
+We know that $x^*$ is a minimizer of $f$ over $K$, it follows that
+
+$$f(x) - f(x^*) \geq 0 \ \ \forall x \in K$$
+
+Thus we have shown that $\langle \nabla f(x), x - x^* \rangle \geq 0$, proving the vector $- \nabla f(x)$ points \textit{towards} $x^*$ for all $x \in K$.
 
 } }
 
@@ -171,24 +192,48 @@ or the average value of the $n$ sampled $a_i$ and $b_i$.
 
 \question{Problem 9 - Numeric Accuracy in MW Updates}
 
-Consider the randomized experts setting we saw in class (we maintain a distribution over experts at each time, and the loss of the algorithm at that time is the expected loss over the distribution). Consider the simple setting where the experts predict $0/1$, and the loss is either $0$ or $1$ for each expert. We saw how to update the probabilities (multiply by $e^{-\eta}$ if an expert makes a mistake, keep unchanged otherwise, and renormalize). One of the common problems here is that numeric errors in such computations tend to compound if not done carefully.
+Consider the randomized experts setting we saw in class (we maintain a distribution over experts at each time, and the loss of the algorithm at that time is the expected loss over the distribution). Consider a setting where the experts predict $0/1$, and the loss is either 0 or 1 for each expert. We saw how to update the probabilities (multiply by $e^{-\eta}$ if an expert makes a mistake, keep unchanged otherwise, and renormalize).
 
-\part{a} Consider one simple suggestion: say we zero out weights that are ``too small'', specifically, suppose we set $q_i^{(i)} = 0$ if $q_i^{(i)} /$ max$_j \ q_t^{(i)} < \epsilon$, for some precision parameter ϵϵ (such changes frequently occur due to roundoff). Other than this, suppose that the $q_t^{(i)}$ are updated accurately. Prove that in this case, we cannot hope to achieve any non-trivial regret bound. Specifically, for large enough $T$, the algorithm can have error $T(1 - o(1))$, while the best expert may have error $o(T)$. [Hint: in this case, we are ``losing'' all information about an expert.]
+One of the common issues here is that numeric errors in such computations tend to compound if not done carefully. Suppose we have $N$ experts, and we start with a uniform distribution over them. Let $p_t^{(i)}$ denote the probability of expert $i$ at time $t$, for the ``true'' (infinite precision) multiplicative weight algorithm, and let $q_t^{(i)}$ denote the probabilities that the `real life' algorithm uses (due to precision limitations).
 
-\part{b} A simple way to avoid this (in this setting) is to avoid storing probabilities, but instead maintaining only the number of mistakes $m_t^{(i)}$. Prove how this suffices to recover the probabilities $p_t^{(i)}$ (assuming infinite precision arithmetic).
+\part{a} One simple way to deal with limited precision is to zero out weights that are ``too small''. Specifically, suppose we set $q_t^{(i)} = 0$ if $q_t^{(i)} /$ max$_j \ q_t^{(j)} < \epsilon$, for some precision parameter $\epsilon$ (such changes frequently occur due to roundoff). Other than this, suppose that the $q_t^{(i)}$ are updated accurately. Prove that in this case, we cannot hope to achieve any non-trivial regret bound. Specifically, for large enough $T$, the algorithm could have error $T(1 - o(1))$, while the best expert may have error $o(T)$. [Hint: in this case, we are ``losing'' all information about an expert.]
+
+\fbox{ \parbox{1\linewidth}{
+
+\textit{proof:} Take two experts $A$ and $B$. Suppose that expert $A$ is the best expert with an error of $\log_2(T)$ which is $< o(T)$ and expert $B$ who is poor and has an error of $T/2$. We will show that the algorithm could have error $T(1 - o(1))$ which for convenience is of the order $O(T)$. \\
+
+Consider the adversarial scenario where expert $A$ makes all of their mistakes before expert $B$ and we will choose $\eta = 0.693147$ such at $e^{- \eta} = 1/2$ (to keep the calculations convenient). \\
+
+Initially at $t = 0$ we have $q_0^{(A)} = 1/2$ and $q_0^{(B)} = 1/2$. At $t = 1$ assume A makes a mistake and B doesn't, giving $q_1^{(A)} = 1/2 * e^{-\eta} = 1/4$. After normalization, we have $q_0^{(A)} = 1/3$ and $q_0^{(B)} = 2/3$. At $t = 2$ expert A makes another mistake where expert $B$ does not. Again giving $q_2^{(A)} = 1/4 * e^{-\eta} = 1/8$ or after normalization $q_2^{(A)} = 1/5$ and $q_2^{(B)} = 4/5$. \\
+
+This scenario where expert $A$ always makes a mistake and expert $B$ does not can be generalized. At step $t$ and after normalization
+
+$$q_t^{(A)} = \frac{1}{t^2 + 1}$$
+
+$$q_t^{(B)} = max_j q_t^{(j)} = \frac{t^2}{t^2 + 1}$$
+
+We will set $q_t^{(A)} = 0$ and "lose" all information from expert A after a small number of steps for a reasonable $\epsilon$
+
+$$\frac{\frac{1}{t^2 + 1}}{\frac{t^2}{t^2 + 1}} = \frac{1}{t^2} < \epsilon$$
+
+For example, let $T = 64$ and $\epsilon = 1 / 16$. At $t = 5$ we will lose expert A by setting $q_t^{(A)} = 0$ as $1/t^2 < \epsilon$. We know that expert $A$ makes $\log_2(T)$ mistakes and $5$ is of the order $\log_2(T)$. For $t = 6$ to $t = 32$ classification will only depend on expert $B$ who makes $T/2$ mistakes. Thus our algorithm will make roughly $(T - \log_2(T))/2 + \log_2(T)$ mistakes which is the order of $O(T)$ despite having a best expert who makes $o(T)$ mistakes. \\
+
+We have proven that in a worst-cast scenario, having a single good expert can still lead to a poor mistake bound.
+} }
+
+\part{b} 
 
 \fbox{ \parbox{1\linewidth}{
 
 } }
 
-\part{c}  Suppose we use the idea in part (b) to construct a distribution $q_t$ that differs from $p_t$ by $< \epsilon$ in the $\ell_1$ norm, i.e., 
-$\sum_i \vert p_t^{(i)} - q_t^{(i)} \vert < \epsilon$. Then, assuming we construct such a $q_t$ at time $t$ to sample, show that the expected number of mistakes of the algorithm is bounded by $(1 + \eta)$ min$_i \ m_T^{(i)} + O(\log N/\eta) + \epsilon T$.
+\part{c}  
 
 \fbox{ \parbox{1\linewidth}{
 
 } }
 
-\part{d} The bound above is not great if there is an expert who makes very small number of mistakes (compared to $T$). Noting that we are dealing with binary predictions, can you come up with a way to run the algorithm, so as to obtain a mistake bound of $(1 + \eta + 2 \epsilon)$ min$_i \ m_T^{(i)} + O(\log N/\eta)$?
+\part{d} 
 
 \fbox{ \parbox{1\linewidth}{
 
@@ -198,7 +243,7 @@ $\sum_i \vert p_t^{(i)} - q_t^{(i)} \vert < \epsilon$. Then, assuming we constru
 
 \question{Collaboration}
 
-I collaborated with Sierra Allred, Maks Cegielski-Johnson, and Dietrich Geisler on problem 6 (all parts) and problem 9 (parts a, b, and c).
+I collaborated with Sierra Allred, Maks Cegielski-Johnson, and Dietrich Geisler on problem 6 (all parts) and problem 9 (parts a and b).
 
 
 

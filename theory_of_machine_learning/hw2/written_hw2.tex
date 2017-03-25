@@ -45,11 +45,33 @@ For this problem, let $f$ be a convex function defined over a convex set $K$, an
 
 \fbox{ \parbox{1\linewidth}{
 
+
 } }
 
-\part{c} Suppose now that the function $f$ is \textit{strictly convex} i.e., $f(\lambda x + (1 - \lambda) y) < \lambda f(x) + (1 - \lambda) f(y)$ (strictly), for all $x \neq y$, and $0 < \lambda < 1$. Prove that all the \textit{maximizers} of $f$ over $K$ lie on the boundary of $K$. [\textit{Hint:} You many want to use the definition that a point $x$ is not on the boundary iff there exists points $y, z \in K$ such that $x = (y + 2)/2$.]
+\part{c} Suppose now that the function $f$ is \textit{strictly convex} i.e., $f(\lambda x + (1 - \lambda) y) < \lambda f(x) + (1 - \lambda) f(y)$ (strictly), for all $x \neq y$, and $0 < \lambda < 1$. Prove that all the \textit{maximizers} of $f$ over $K$ lie on the boundary of $K$. [\textit{Hint:} You many want to use the definition that a point $x$ is not on the boundary iff there exists points $y, z \in K$ such that $x = (y + z)/2$.]
 
 \fbox{ \parbox{1\linewidth}{
+
+\textit{proof by contradiction:} Let's $x \in K$ be a \textit{maximizer} of $f$ and assume that $x$ is \textbf{not} on the boundary of $K$. \\
+
+Take $y, z \in K$ such that $y \neq z$ and $x = (y + z) / 2$. We know $y, z \in K$ exist as $x$ is not on the boundary and using the provided hint. Since $x$ is a \textit{maximizer} of $f$, then it follows that $f(x) \geq f(y)$ and $f(x) \geq f(z)$. Applying the definition of \textit{strictly convex} to $y$ and $z$
+
+$$f(\lambda y + (1 - \lambda) z ) < \lambda f(y) + (1 - \lambda) f(z)$$
+
+Using $f(x) \geq f(y)$ and $f(x) \geq f(z)$ we can give an upper-bound
+
+$$f(\lambda y + (1 - \lambda) z ) < \lambda f(y) + (1 - \lambda) f(z) \leq f(x)$$
+
+Ignoring the middle term gives us
+
+$$f(\lambda y + (1 - \lambda) z ) < f(x)$$
+
+We know that $x = (y + z) / 2$. By making this substitution for $x$ and taking $\lambda = 1/2$
+
+$$f(\frac{y}{2} + \frac{z}{2}) < f(\frac{y + z}{2})$$
+$$f(\frac{y + z}{2}) < f(\frac{y + z}{2})$$
+
+We arrive at a contradiction as the inequality is strict. Thus all the \textit{maximizers} of $f$ over $K$ lie on the boundary of $K$.
 
 } }
 
@@ -82,16 +104,16 @@ $$
     \right.
 $$
 
-As such, we can see at each iteration of gradient descent we will take a $ \eta$ sized step from the current point. This step will be in the positive direction if $x$ is negative and vice-versa. Thus, regardless of how small $\eta$ is, we can easily arrive at a situation where gradient descent will oscillate around the optimum point found at the origin.
+As such, we can see at each iteration of gradient descent we will take a $ \eta$ sized step from the current point. This step will be in the positive direction if $x$ is negative and vice-versa. For example take the starting point $x = \eta / 2$. At each iteration of gradient descent, we will oscillate between $x = - \eta / 2$ and $x = \eta / 2$. Thus we will never get within $\eta / 4$ of the optimum.
 
 } }
 
 \part{b} Consider the function $f(x, y) = x^2 + \frac{y^2}{4}$, and suppose we run gradient descent with starting point $(1, 1)$, and $\eta = 1/4$. Do we get arbitrarily close to the minimum? Experimentally, find the \textit{threshold} for $\eta$, beyond which the gradient descent starts to oscillate.
 
 \fbox{ \parbox{1\linewidth}{
-Given the function $f(x, y) = x^2 + \frac{y^2}{4}$ with a starting point of $\mathbf{w}^{(1)} = (1, 1)$ and $\eta = 1/4$ we get arbitrarily close to the minimum. The minimum of $f(x, y)$ is 0 when $\mathbf{w} = (0, 0)$. To explore this gradient descent scenario, I wrote a program to calculate $\mathbf{w}^{(t)}$ and defined arbitrarily close to being within $0.0001$ of the minimum. I found after 39 steps that $\mathbf{w}^{(39)} = (3.6379\mathrm{e}{-12}, 0.0063)$ and $f(x, y) = 9.7848\mathrm{e}{-06}$. Given enough iterations, the gradient descent found the optimum point. \\
+Given the function $f(x, y) = x^2 + \frac{y^2}{4}$ with a starting point of $\mathbf{w}^{(1)} = (1, 1)$ and $\eta = 1/4$ we get arbitrarily close to the minimum. The minimum of $f(x, y)$ is 0 when $\mathbf{w} = (0, 0)$. To explore this gradient descent scenario, I wrote a program to calculate $\mathbf{w}^{(t)}$ and defined arbitrarily close to being within $0.0001$ of the minimum. I found after 39 steps that $\mathbf{w}^{(39)} = (3.6379\mathrm{e}{-12}, 0.0063)$ and $f(x, y) = 9.7848\mathrm{e}{-06}$. Given enough iterations, the gradient descent found the optimum point (barring floating-point precision issues). \\
 
-Using a program, I found the threshold for $\eta$. I found the gradient descent starts to oscillate when $\eta \geq 1$. When $\eta = 1$, the behavior is interesting. The $x$ component of $\mathbf{w}^{(t)}$ alternates between the values $1$ and $-1$ and the $y$ component converges to $0$. As such, $f(x, y)$ oscillates between $-1$ and $1$.
+Using a program, I found the threshold for $\eta$. I found that gradient descent does not find the optimum point when $\eta \geq 1$. When $\eta = 1$, the behavior is interesting. The $x$ component of $\mathbf{w}^{(t)}$ alternates between the values $1$ and $-1$ and the $y$ component converges to $0$. As such, $f(x, y) = 1$ which is not arbitrarily close to the minimum.
 } }
 
 \part{c} Why is the behavior similar to that in part (a) (oscillation for every $\eta$) not happening in part (b)?
@@ -118,6 +140,14 @@ Suppose we have points $(a_1, b_1), (a_2, b_2), ... , (a_n, b_n)$ in the plane a
 \part{a} What is the point $(x , y)$ that minimizes $f(x, y)$?
 
 \fbox{ \parbox{1\linewidth}{
+
+We can observe that $f_i(x, y) = (x - a_i)^2 + (y - b_i)^2$ is minimized when $x = a_i$ and $y = b_i$. This is true as $f_i(x = a_i, y = b_i) = 0$ for all $\vert a_i \vert \leq 1$ and $\vert b_i \vert \leq 1$ and $f_i(x, y)$ is a non-negative function. \\
+
+The intuition is we want to minimize the average distance from a point $(x, y)$ to each point $(a_i, b_i)$ from the sampled $(a_1, b_1), (a_2, b_2), ... , (a_n, b_n)$ points in the plane. This is from an observation that $f_i(x, y)$ is minimized the closer $x - a_i$ and $x - b_i$ are to zero. To find the point $(x, y)$ that minimizes $f(x, y)$, we take
+
+$$x = \frac{1}{n} \sum_{i = 1}^n a_i \ \ \ \ \ \ \ \ \ y = \frac{1}{n} \sum_{i = 1}^n b_i$$
+
+or the average value of the $n$ sampled $a_i$ and $b_i$.
 
 } }
 
@@ -163,5 +193,13 @@ $\sum_i \vert p_t^{(i)} - q_t^{(i)} \vert < \epsilon$. Then, assuming we constru
 \fbox{ \parbox{1\linewidth}{
 
 } }
+
+\newpage
+
+\question{Collaboration}
+
+I collaborated with Sierra Allred, Maks Cegielski-Johnson, and Dietrich Geisler on problem 6 (all parts) and problem 9 (parts a, b, and c).
+
+
 
 \end{document}

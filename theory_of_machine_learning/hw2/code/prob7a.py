@@ -16,7 +16,7 @@ def step(vec, eta):
     
 eta = 0.03
 step_count = 1
-vec = [54.5]
+vec = [eta / 2]
 while(True):
     print('Step', step_count, vec, f(vec, eta), eta)
     step_count += 1

@@ -13,13 +13,13 @@ def step(vec, eta):
     grad[1] = vec[1] - grad[1] * eta
     return grad
     
-eta = 0.25
+eta = 1.01
 step_count = 1
 vec = [1, 1]
 while(True):
     print('Step', step_count, vec, f(vec), eta)
     step_count += 1
     vec = step(vec, eta)
-    if (f(vec) == 0) or step_count == 10:
+    if (f(vec) == 0):
         break
 print('Step', step_count, vec, f(vec), eta)

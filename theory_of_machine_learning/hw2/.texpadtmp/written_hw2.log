@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  25 MAR 2017 17:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  26 MAR 2017 13:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -324,44 +324,49 @@ Overfull \hbox (14.09998pt too wide) in paragraph at lines 173--174
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 222--222
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 222--222
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 222--222
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 222--222
-
- []
-
-
-Overfull \hbox (14.09998pt too wide) in paragraph at lines 222--223
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 225--226
 [][]  
  []
 
-[5] [6] [7] (/Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.aux) ) 
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 256--256
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--256
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--256
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--256
+
+ []
+
+
+Overfull \hbox (14.09998pt too wide) in paragraph at lines 256--257
+[][]  
+ []
+
+[6] [7] [8] (/Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.aux) ) 
 Here is how much of TeX's memory you used:
- 3116 strings out of 493014
- 42174 string characters out of 6133351
- 116742 words of memory out of 5000000
- 6609 multiletter control sequences out of 15000+600000
+ 3119 strings out of 493014
+ 42203 string characters out of 6133351
+ 115742 words of memory out of 5000000
+ 6612 multiletter control sequences out of 15000+600000
  9563 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,11n,43p,672b,256s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on /Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.pdf (7 pages, 157894 bytes).
+Output written on /Users/jsp/Documents/spring2017/theory_of_machine_learning/hw2/.texpadtmp/written_hw2.pdf (8 pages, 159949 bytes).
 PDF statistics:
- 75 PDF objects out of 1000 (max. 8388607)
- 52 compressed objects within 1 object stream
+ 78 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

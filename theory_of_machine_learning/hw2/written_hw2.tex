@@ -200,7 +200,11 @@ or the average value of the $n$ sampled $a_i$ and $b_i$.
 
 \fbox{ \parbox{1\linewidth}{
 
+Take $n$ points $(a_1, b_1), (a_2, b_2), ... , (a_n, b_n)$ chosen from $[-1, 1]^2$ (uniformly). Given the uniform distribution and large enough $n$, we can expect the point $(x, y)$ that minimizes $f(x, y)$ to be $(0, 0)$. More clearly, we can expect $\sum_{i = 1}^n a_i = 0$ and $\sum_{i = 1}^n b_i = 0$ and from part a it follows that the optimal point will be $(x, y) = (0, 0)$. \\
 
+At each iteration of gradient descent, we will take a (dependent on $\eta$) step towards the optimal point. In problem 6b we proved that if $f$ is convex and we have an optimal point $x^*$, then $- \nabla f(x)$ points \textit{towards} $x^*$. \\
+
+Depending on our choice of $\eta$ in $0 < \eta < 1$, we may experience oscillation around the optimum point.
 
 } }
 
@@ -300,19 +304,20 @@ We have proven that in a worst-cast scenario, having a single good expert can st
 \part{b} A simple way to overcome this is to avoid storing probabilities, but instead to maintain the number of mistakes $m_t^{(i)}$. Prove how this suffices to recover the probabilities $p_t^{(i)}$j (assuming infinite precision arithmetic).
 
 \fbox{ \parbox{1\linewidth}{
-
+Didn't complete.
 } }
 
 \part{c}  
 
 \fbox{ \parbox{1\linewidth}{
 
-
+Didn't complete.
 } }
 
 \part{d} 
 
 \fbox{ \parbox{1\linewidth}{
+Didn't complete.
 
 } }
 
@@ -320,7 +325,7 @@ We have proven that in a worst-cast scenario, having a single good expert can st
 
 \question{Collaboration and Code}
 
-I collaborated with Sierra Allred, Maks Cegielski-Johnson, and Dietrich Geisler on problem 6 (all parts) and problem 9 (parts a and b). \newline
+I collaborated with Sierra Allred, Maks Cegielski-Johnson, and Dietrich Geisler on problem 6 (all parts) and problem 9 (part a). \newline
 
 
 Experiments were conducted with programs written in standard Python3. I can e-mail you my codebase if needed to make sense of my experimental results.

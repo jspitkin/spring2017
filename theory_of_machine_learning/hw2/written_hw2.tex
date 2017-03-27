@@ -39,6 +39,30 @@ For this problem, let $f$ be a convex function defined over a convex set $K$, an
 
 \fbox{ \parbox{1\linewidth}{
 
+The text defines a convex function as such. Let $C$ be a convex set. A function $f$ : $C \rightarrow \mathbb{R}$ is convex if for every $\mathbf{u}, \mathbf{v} \in C$ and $\alpha \in [0, 1]$,
+
+$$f(\alpha \mathbf{u} + (1 - \alpha) \mathbf{v}) \leq \alpha f(\mathbf{u}) + (1 - \alpha)f(\mathbf{v})$$
+
+Let us apply this definition to $x, z \in K$ where $f(x) = 2$ and $\vert \vert \nabla f(x) \vert \vert = 1$.
+
+$$f(\alpha \mathbf{x} + (1 - \alpha) \mathbf{z}) \leq \alpha f(\mathbf{x}) + (1 - \alpha)f(\mathbf{z})$$
+
+We know the diameter of the convex set $K$ is 1 and since we are interested in a lower bound, we will select the most optimal point in $K$ which is $z = x - 1$ (as $f$ has a positive gradient). Replacing $z = x - 1$ and  $f(x) = 1$ in the definition
+
+$$f(\alpha \mathbf{x} + (1 - \alpha) (\mathbf{x} - 1)) \leq \alpha * 2 + (1 - \alpha)f(\mathbf{z})$$
+
+Take $\alpha = 0$
+
+$$f(0 * \mathbf{x} + (1 - 0) (\mathbf{x} - 1)) \leq 0 * 2 + (1 - 0)f(\mathbf{z})$$
+
+$$f(x - 1) \leq f(\mathbf{z})$$
+
+We know $\vert \vert \nabla f(x) \vert \vert = 1$ so it follows that $f(x - 1) = f(x) - 1 = 1$
+
+$$1 \leq f(\mathbf{z})$$
+
+Thus min$_{z \in K}$ $f(z)$ is lower bounded by 1.
+
 } }
 
 \part{b} Let $x^*$ be the minimizer of $f$ over $K$ (suppose it is unique), and let $x$ be any other point. The intuition behind gradient descent is that the vector: $- \nabla f(x)$ points \textit{towards} $x^*$. Prove that this is indeed true, in the sense that $\langle \nabla f(x), x - x^* \rangle \geq 0$ (i.e., the negative gradient makes an acute angle with the line to the optimum).
@@ -255,7 +279,7 @@ For example, let $T = 64$ and $\epsilon = 1 / 16$. At $t = 5$ we will lose exper
 We have proven that in a worst-cast scenario, having a single good expert can still lead to a poor mistake bound.
 } }
 
-\part{b} 
+\part{b} A simple way to overcome this is to avoid storing probabilities, but instead to maintain the number of mistakes $m_t^{(i)}$. Prove how this suffices to recover the probabilities $p_t^{(i)}$j (assuming infinite precision arithmetic).
 
 \fbox{ \parbox{1\linewidth}{
 
@@ -281,7 +305,7 @@ We have proven that in a worst-cast scenario, having a single good expert can st
 I collaborated with Sierra Allred, Maks Cegielski-Johnson, and Dietrich Geisler on problem 6 (all parts) and problem 9 (parts a and b). \newline
 
 
-Experiments were conducted with programs written in standard Python3. I can e-mail you my codebase if need be.
+Experiments were conducted with programs written in standard Python3. I can e-mail you my codebase if needed to make sense of my experimental results.
 
 
 

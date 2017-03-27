@@ -23,8 +23,8 @@ def f_i(vec, point):
 
 def gradient(vec, point):
    grad = [0, 0]
-   grad[0] = 2 * vec[0] - point[0]
-   grad[1] = 2 * vec[1] - point[1]
+   grad[0] = 2 * vec[0] - point[0] - point[0]
+   grad[1] = 2 * vec[1] - point[1] - point[1]
    return grad
 
 

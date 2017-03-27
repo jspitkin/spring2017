@@ -51,7 +51,7 @@ We know the diameter of the convex set $K$ is 1 and since we are interested in a
 
 $$f(\alpha \mathbf{x} + (1 - \alpha) (\mathbf{x} - 1)) \leq \alpha * 2 + (1 - \alpha)f(\mathbf{z})$$
 
-Take $\alpha = 0$
+Take $\alpha = 0$ as we are interested in $f(z)$
 
 $$f(0 * \mathbf{x} + (1 - 0) (\mathbf{x} - 1)) \leq 0 * 2 + (1 - 0)f(\mathbf{z})$$
 
@@ -200,11 +200,29 @@ or the average value of the $n$ sampled $a_i$ and $b_i$.
 
 \fbox{ \parbox{1\linewidth}{
 
+
+
 } }
 
 \part{c} Now suppose we perform stochastic gradient descent with fixed step-size $0 < \eta < 1$, and by picking $i$ at random in $\{1, ... , n\}$, and moving along the gradient of $f_i$ (as in SGD seen in class). After $T$ steps, for $T$ large enough, can we say that we get arbitrarily close to the optimum? (Provide a clear explanation). [\textit{Hint:} Remember $\eta$ is fixed.]
 
 \fbox{ \parbox{1\linewidth}{
+Consider a fixed $\eta = 1/2$. For each iteration of SGD, a random point $(a_i, b_i)$ from the $n$ points is selected and $\mathbf{w} = (x, y)$ is updated with the following rule
+
+$$\mathbf{w}^{(t + 1)} = \mathbf{w}^{(t)} - \eta * \nabla f_i(\mathbf{w}^{(t)})$$
+
+We calculate $\nabla f_i(\mathbf{w}) = (2(x - a_i), 2(y - b_i))$. Giving the following when updating $\mathbf{w}$ each iteration
+
+$$(x, y)^{(t + 1)} = (x, y)^{(t)} - \frac{1}{2} * (2(x - a_i), 2(y - b_i))^{(t)}$$
+
+$$(x, y)^{(t + 1)} = (x, y)^{(t)} - (x - a_i, y - b_i)^{(t)}$$
+
+$$(x, y)^{(t + 1)} = (x^{(t)} - x^{(t)} + a_i, y^{(t)} - y^{(t)} + b_i)$$
+
+$$(x, y)^{(t + 1)} = (a_i, b_i)$$
+
+By picking $\eta = 1/2$, each iteration the weight vector will be updated to the current point $(a_i, b_i)$. It's clear that we don't any hope getting arbitrarily close the optimum. We will show this experimentally in part d.
+
 
 } }
 
@@ -221,9 +239,9 @@ or the average value of the $n$ sampled $a_i$ and $b_i$.
 \hline
 t & distance\\
 \hline
-10 & 0.005107\\ \hline
-100 & 0.005202\\ \hline
-1,000 & 0.00495\\ \hline
+10 & 0.0092\\ \hline
+100 & 0.014\\ \hline
+1,000 & 0.0152\\ \hline
 \end{tabular}}
 \caption{Results at $t = 10, 100$, and $1,000$ for a fixed $\eta$.}
 \end{table}
@@ -237,14 +255,14 @@ t & distance\\
 \hline
 t & distance\\
 \hline
-10 & 0.00166\\ \hline
-100 & 0.0003\\ \hline
-1,000 & 0.000009\\ \hline
+10 & 0.0026\\ \hline
+100 & 0.0014\\ \hline
+1,000 & 0.00035\\ \hline
 \end{tabular}}
 \caption{Results at $t = 10, 100$, and $1,000$ for $\eta_t = 1/t$.}
 \end{table}
 
-We can observe in experiment 1 we experience oscillation around the optimum point when $\eta$ is fixed at $1/2$. Alternatively, if we decrease the step-size at each iteration it allows us to get arbitrarily close to the optimum point.
+In experiment 1  we can see the poor results described in part c. In experiment 2 with a dropping step size, we achieve better results and move towards the optimum point.
 
 } }
 

@@ -32,15 +32,22 @@
 
 \question{Problem 1}{LINKER}
 
-\part{a}
+The questions below pertain to the LINKER discourse-guided event extraction system [Huang and Riloff, AAI 2012]. Consider the following story that contains five sentence:
 
+\textit{S1: A large tornado damaged 12 homes in Alabama yesterday. \\
+S2: Several people were also hurt by the massive tornado. \\
+S3: The injured people were taken to the hospital. \\
+S4: The tornado hit central Huntsville near the hospital. \\
+S5: Huntsville did not get enough early warning of the tornado to flee. \\}
+
+\part{a} Show the lexical bridge features that LINKER would create for the sentence pair S4 and S5.
 
  \begin{table}[H]
 \centering
 {\renewcommand{\arraystretch}{1.2}%
 \begin{tabular}{| c | c | c |}
 \hline
-\textbf{\textit{S4}} & \textbf{\textit{S5}} & \textbf{Lexical Bridge Feature}\\
+\textbf{S4} & \textbf{S5} & \textbf{Lexical Bridge Feature}\\
 \hline
 tornado & Huntsville & $<$tornado, Huntsville$>$ \\ \hline
 tornado & warning & $<$tornado, warning$>$ \\ \hline
@@ -55,10 +62,10 @@ hit & did & $<$hit, did$>$ \\ \hline
 hit & get & $<$hit, get$>$ \\ \hline
 hit & flee & $<$hit, flee$>$ \\ \hline
 \end{tabular}}
-\caption{Lexical bridge features between \textit{S4} and \textit{S5}}
+\caption{Lexical bridge features between S4 and S5}
 \end{table}
 
-\part{b}
+\part{b} Show the discourse focus features that the LINKER event extraction system would produce \textit{for each adjacent pair} of sentences in the story above. Be sure to indicate which sentence pair (e.g. S1+S2) each feature was generated from.
 
  \begin{table}[H]
 \centering
@@ -73,14 +80,23 @@ the hospital (S4)&  the hospital (S3)& $<$hospital, , $>$ \\ \hline
 Huntsville (S5)&  central Huntsville (S4)& $<$Huntsville, , $>$ \\ \hline
 the tornado (S5)&  The tornado (S4)& $<$tornado, , $>$ \\ \hline
 \end{tabular}}
-\caption{Discourse Focus Features for \textit{S1-S5}}
+\caption{Discourse Focus Features for S1-S5}
 \end{table}
 
-\part{c}
+\part{c} Suppose the role filler extractors produce the following extractions:
+
+\textit{S1: DAMAGE = "12 homes", LOCATION = "Alabama" \\
+S2: VICTIM = "Several people" \\
+S3: VICTIM = "The injured people" \\
+S4: LOCATION = "central Huntsville" \\
+S5: LOCATION = "Huntsville"} \newline
+
+If the sentence classifier labels sentences S2, S3 and S4 as event contexts, what will LINKER's final output be?
 
 \question{Problem 2}{Event Extraction}
 
-\part{a}
+
+\part{a} Indicate whether that are any trigger words that violate the \textit{One Trigger Sense Per Cluster} heuristic. List all instances of a trigger word that violate this heuristic, and specify the document in which the violation occurs.
 
  \begin{table}[H]
 \centering
@@ -95,7 +111,7 @@ shot & D4 \\ \hline
 \caption{\textit{One Trigger Sense Per Cluster} violations}
 \end{table}
 
-\part{b}
+\part{b} Indicate whether there are any entities that violate the \textit{One Argument Role Per Cluster} heuristic. For the purposes of this question, consider any entity to be the head noun of a noun phrase (e.g., "tourist", "Paris", and "assailant" are the entities in D1). List all instances of entities that violate this heuristic, and specify the document in which the violation occurs.
 
  \begin{table}[H]
 \centering
@@ -111,6 +127,8 @@ employee & D7 \\ \hline
 \end{table}
 
 \question{Problem 3}{Opinion Extraction}
+
+For each sentence below, indicate whether it should be labeled as OPINION-PROPOSITION, OPINION-SENTENCE, or NON-OPINION by the opinion extraction system developed by [Bethard et al. 2004]. If you answer OPINION-PROPOSITION, then please underline the portion of the sentence that contains the opinion proposition.
 
 \part{a} A decision by authorities in California will halt ride-hailing company Uber from operating a fleet of self-driving cars.
 
@@ -168,7 +186,9 @@ employee & D7 \\ \hline
 
 \question{Problem 4}{Opinion Frames}
 
-\textit{My friend Joe and I finally visited the new Italian restaurant called "Viva Italy!", which was quite good. I had the manicotti, which was extremely flavorful. Joe had lasagna and a caesar salad. He said that the lasagna had a wonderfully rich sauce, but the lettuce in the salad was wilted and the salad dressing was oily.}
+\textit{My friend Joe and I finally visited the new Italian restaurant called "Viva Italy!", which was quite good. I had the manicotti, which was extremely flavorful. Joe had lasagna and a caesar salad. He said that the lasagna had a wonderfully rich sauce, but the lettuce in the salad was wilted and the salad dressing was oily.} \newline
+
+Show all of the opinion frames ("opinion units") that should be produced by the opinion extraction system developed by [Kobayashi et al. 2007] for the review above.
 
  \begin{table}[H]
 \centering
@@ -241,24 +261,88 @@ employee & D7 \\ \hline
 \begin{equation}
 \setlength\fboxsep{0.25cm}
 \setlength\fboxrule{0.4pt}
-\boxed{MUC \ Recall = \sum_{i \in N_k} ( \vert K_i \vert - \vert p(K_i) \vert ) / \sum_{i \in N_k} ( \vert K_i \vert - 1)}
+\boxed{MUC \ Recall = \sum_{i \in N_k} ( \vert k_i \vert - \vert p(k_i) \vert ) / \sum_{i \in N_k} ( \vert k_i \vert - 1)}
 \end{equation}
 
 \begin{equation}
 \setlength\fboxsep{0.25cm}
 \setlength\fboxrule{0.4pt}
-\boxed{MUC \ Precision = \sum_{i \in N_r} ( \vert R_i \vert - \vert p(R_i) \vert ) / \sum_{i \in N_r} ( \vert R_i \vert - 1)}
+\boxed{MUC \ Precision = \sum_{i \in N_r} ( \vert r_i \vert - \vert p(r_i) \vert ) / \sum_{i \in N_r} ( \vert r_i \vert - 1)}
 \end{equation}
 
-\part{a}
+\part{a} Compute recall and precision for the response chains above using the MUC scoring metric. Be sure to show all your work, including the partitions for each chain!
 
-\begin{equation}
-\setlength\fboxsep{0.25cm}
-\setlength\fboxrule{0.4pt}
-\boxed{B^3 \ Precision = }
-\end{equation}
+To compute recall, first we will compute the partitions intersecting $k_i$ with the response chains:
+\begin{align*}
+p(k_1) &= \{\{a\},\{b, c\},\{d\}\} \\
+p(k_2) &= \{\{e\},\{f\}\} \\
+p(k_3) &= \{\{g\},\{h\},\{i, j\},\{k\}\} \\
+p(k_4) &= \{\{n\},\{m\}\} \\
+p(k_5) &= \{\{o\}\}
+\end{align*}
 
-\part{b}
+Using eq. 1, we will first compute the numerator
+
+$$\sum_{i \in N_k} ( \vert k_i \vert - \vert p(k_i) \vert ) = (4 - 3) + (2 - 2) + (5 - 4) + (2 - 2) + (1 - 1) = 2$$
+
+Next we use eq. 1 again and compute the denominator
+
+$$\sum_{i \in N_k} ( \vert k_i \vert - 1) = (4 - 1) + (2 - 1) + (5 - 1) + (2 - 1) + (1 - 1) = 9$$
+
+Combining these gives us the MUC recall 
+
+\fbox{ \parbox{0.30\linewidth}{
+\textbf{MUC recall:} $\mathbf{2 / 9 = 0.222}$
+} }
+\newline 
+
+The compute precision, first we will compute the partitions intersecting $r_i$ with the key chains:
+
+\begin{align*}
+p(r_1) &= \{\{a\},\{g, h\}\} \\
+p(r_2) &= \{\{b, c\}\} \\
+p(r_3) &= \{\{d\},\{e\},\{k\}\} \\
+p(r_4) &= \{\{f\},\{o\}\} \\
+p(r_5) &= \{\{i, j\}, \{n\}\} \\
+p(r_6) &= \{\{m\}\}
+\end{align*}
+
+Using eq. 2, we will first compute the numerator
+
+$$\sum_{i \in N_r} ( \vert r_i \vert - \vert p(r_i) \vert ) = (3 - 2) + (2 - 1) + (3 - 3) + (2 - 2) + (1 - 1) = 2$$
+
+Next we use eq. 2 again and compute the denominator
+
+$$\sum_{i \in N_r} ( \vert r_i \vert - 1) = (3 - 1) + (2 - 1) + (3 - 1) + (2 - 1) + (3 - 1) + (1 - 1) = 8$$
+
+Combining these gives us the MUC precision
+
+\fbox{ \parbox{0.32\linewidth}{
+\textbf{MUC precision:} $\mathbf{2 / 8 = 0.25}$
+} }
+
+\part{b} Compute recall and precision for the response chains above using the $B^3$ scoring metric. Be sure to show all your work!
+
+To compute the $B^3$ recall, we will compute the recall for each entity E in a gold key chain $k_i$, take their sum, and divide by the total number of entities.
+
+To compute the recall for an entity E, we find the response chain $r_j$ that contains E and take the cardinality of their intersection divided by the cardinality of $k_i$.
+
+\begin{align*}
+recall \ a &= (\vert k_1 \vert \cap \vert r_1 \vert) / \vert k_1 \vert = 1 / 4 \\
+recall \ b &= (\vert k_1 \vert \cap \vert r_2 \vert) / \vert k_1 \vert =  \\ 
+recall \ c &= (\vert k_1 \vert \cap \vert r_2 \vert) / \vert k_1 \vert =  \\
+recall \ d &= (\vert k_1 \vert \cap \vert r_3 \vert) / \vert k_1 \vert =  \\ 
+recall \ e &= (\vert k_2 \vert \cap \vert r_3 \vert) / \vert k_2 \vert =  \\ 
+recall \ f &= (\vert k_2 \vert \cap \vert r_4 \vert) / \vert k_2 \vert =  \\
+recall \ g &= (\vert k_3 \vert \cap \vert r_1 \vert) / \vert k_3 \vert =  \\ 
+recall \ h &= (\vert k_3 \vert \cap \vert r_1 \vert) / \vert k_3 \vert =  \\
+recall \ i &= (\vert k_3 \vert \cap \vert r_5 \vert) / \vert k_3 \vert =  \\
+recall \ j &= (\vert k_3 \vert \cap \vert r_5 \vert) / \vert k_3 \vert =  \\
+recall \ k &= (\vert k_3 \vert \cap \vert r_3 \vert) / \vert k_3 \vert =  \\
+recall \ m &= (\vert k_4 \vert \cap \vert r_6 \vert) / \vert k_4 \vert =  \\
+recall \ n &= (\vert k_4 \vert \cap \vert r_5 \vert) / \vert k_4 \vert =  \\
+recall \ o &= (\vert k_5 \vert \cap \vert r_4 \vert) / \vert k_5 \vert = 
+\end{align*}
 
 
 \end{document}

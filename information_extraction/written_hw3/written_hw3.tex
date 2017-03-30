@@ -1,0 +1,264 @@
+%    2. Write your answers in section "B" below. Precede answers for all 
+%       parts of a question with the command "\question{n}{desc}" where n is
+%       the question number and "desc" is a short, one-line description of 
+%       the problem. There is no need to restate the problem.
+%    3. If a question has multiple parts, precede the answer to part x with the
+%       command "\part{x}".
+%    4. If a problem asks you to design an algorithm, use the commands
+%       \algorithm, \correctness, \runtime to precede your discussion of the 
+%       description of the algorithm, its correctness, and its running time, respectively.
+%    5. You can include graphics by using the command \includegraphics{FILENAME}
+%
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{float}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1: #2}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\pagestyle{fancyplain}
+\lhead{\textbf{\NAME\ (\UID)}}
+\chead{\textbf{HW\HWNUM}}
+\rhead{CS 6390, \today}
+\begin{document}\raggedright
+
+\newcommand\NAME{Jake Pitkin}
+\newcommand\UID{u0891770}
+\newcommand\HWNUM{3}
+
+\question{Problem 1}{LINKER}
+
+\part{a}
+
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{\textit{S4}} & \textbf{\textit{S5}} & \textbf{Lexical Bridge Feature}\\
+\hline
+tornado & Huntsville & $<$tornado, Huntsville$>$ \\ \hline
+tornado & warning & $<$tornado, warning$>$ \\ \hline
+tornado & tornado & $<$tornado, tornado$>$ \\ \hline
+Huntsville & Huntsville & $<$Huntsville, Huntville$>$ \\ \hline
+Huntsville & warning & $<$Huntsville, warning$>$ \\ \hline
+Huntsville & tornado & $<$Huntsville, tornado$>$ \\ \hline
+hospital & Huntsville & $<$hospital, Huntsville$>$ \\ \hline
+hospital & warning & $<$hospital, warning$>$ \\ \hline
+hospital & tornado & $<$hospital, tornado$>$ \\ \hline
+hit & did & $<$hit, did$>$ \\ \hline
+hit & get & $<$hit, get$>$ \\ \hline
+hit & flee & $<$hit, flee$>$ \\ \hline
+\end{tabular}}
+\caption{Lexical bridge features between \textit{S4} and \textit{S5}}
+\end{table}
+
+\part{b}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{Current Sentence NP} & \textbf{Previous Sentence NP} & \textbf{Discourse Focus Feature}\\
+\hline
+the massive tornado (S2)&  A large tornado (S1)& $<$tornado, PP(by), subject$>$ \\ \hline
+The injured people (S3)&  Several People (S2)& $<$people, subject, subject$>$ \\ \hline
+the hospital (S4)&  the hospital (S3)& $<$hospital, , $>$ \\ \hline
+Huntsville (S5)&  central Huntsville (S4)& $<$Huntsville, , $>$ \\ \hline
+the tornado (S5)&  The tornado (S4)& $<$tornado, , $>$ \\ \hline
+\end{tabular}}
+\caption{Discourse Focus Features for \textit{S1-S5}}
+\end{table}
+
+\part{c}
+
+\question{Problem 2}{Event Extraction}
+
+\part{a}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Violating Trigger Word} & \textbf{Document}\\
+\hline
+attack & D2 \\ \hline
+shot & D4 \\ \hline
+\end{tabular}}
+\caption{\textit{One Trigger Sense Per Cluster} violations}
+\end{table}
+
+\part{b}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Entity} & \textbf{Document}\\
+\hline
+tourist & D7 \\ \hline
+employee & D7 \\ \hline
+\end{tabular}}
+\caption{\textit{One Argument Role Per Cluster} violations}
+\end{table}
+
+\question{Problem 3}{Opinion Extraction}
+
+\part{a} A decision by authorities in California will halt ride-hailing company Uber from operating a fleet of self-driving cars.
+
+\fbox{ \parbox{0.20\linewidth}{
+\textbf{NON-OPINION}
+} }
+
+\part{b} There have already been a number of deaths involving autopilot systems.
+
+\fbox{ \parbox{0.20\linewidth}{
+\textbf{NON-OPINION}
+} }
+
+\part{c} Tesla and Uber ought to proceed more cautiously with the public rollout of automation than they have so far.
+
+\fbox{ \parbox{0.28\linewidth}{
+\textbf{OPINION-SENTENCE}
+} }
+
+\part{d} A researcher at Google claims \textbf{driverless cars will have a significant impact on society.}
+
+\fbox{ \parbox{0.8\linewidth}{
+\textbf{OPINION-PROPOSITION} (opinion proposition bolded in the sentence)
+} }
+
+\part{e} Google is working with insurance companies, such as Allstate, to figure out how to deal with accidents.
+
+\fbox{ \parbox{0.2\linewidth}{
+\textbf{NON-OPINION}
+} }
+
+\part{f} Allstate has warned Google that \textbf{if producers do not move slowly than they will inevitably create a backlash against the technology.}
+
+\fbox{ \parbox{0.8\linewidth}{
+\textbf{OPINION-PROPOSITION} (opinion proposition bolded in the sentence)
+} }
+
+\part{g} Washington should resist the temptation to slap onerous regulations on a promising industry.
+
+\fbox{ \parbox{0.28\linewidth}{
+\textbf{OPINION-SENTENCE}
+} }
+
+\part{h} \textbf{"The risks of self-driving cars are still too unclear to justify wide-scale deployment at this time"} argued an attorney for the U.S. government.
+
+\fbox{ \parbox{0.8\linewidth}{
+\textbf{OPINION-PROPOSITION} (opinion proposition bolded in the sentence)
+} }
+
+\part{i} The promise of fewer accidents and the freedom that self-driving cars would bring to people with disabilities are compelling reasons to rapidly move forward with this technology.
+
+\fbox{ \parbox{0.28\linewidth}{
+\textbf{OPINION-SENTENCE}
+} }
+
+\question{Problem 4}{Opinion Frames}
+
+\textit{My friend Joe and I finally visited the new Italian restaurant called "Viva Italy!", which was quite good. I had the manicotti, which was extremely flavorful. Joe had lasagna and a caesar salad. He said that the lasagna had a wonderfully rich sauce, but the lettuce in the salad was wilted and the salad dressing was oily.}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Opinion Holder} & $<$writer$>$\\ \hline
+\textbf{Subject (Target)} & $<$"Viva Italy!"$>$ \\ \hline
+\textbf{Aspect} & $<$$>$ \\ \hline
+\textbf{Evaluation} & $<$quite good$>$ \\ \hline
+\end{tabular}}
+\caption{Opinion Frame One}
+\end{table}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Opinion Holder} & $<$writer$>$\\ \hline
+\textbf{Subject (Target)} & $<$the manicotti$>$ \\ \hline
+\textbf{Aspect} & $<$flavor$>$ \\ \hline
+\textbf{Evaluation} & $<$extremely flavorful$>$ \\ \hline
+\end{tabular}}
+\caption{Opinion Frame Two}
+\end{table}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Opinion Holder} & $<$Joe$>$\\ \hline
+\textbf{Subject (Target)} & $<$lasagna$>$ \\ \hline
+\textbf{Aspect} & $<$sauce$>$ \\ \hline
+\textbf{Evaluation} & $<$wonderfully rich$>$ \\ \hline
+\end{tabular}}
+\caption{Opinion Frame Three}
+\end{table}
+
+ \begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Opinion Holder} & $<$Joe$>$\\ \hline
+\textbf{Subject (Target)} & $<$caesar salad$>$ \\ \hline
+\textbf{Aspect} & $<$lettuce$>$ \\ \hline
+\textbf{Evaluation} & $<$wilted$>$ \\ \hline
+\end{tabular}}
+\caption{Opinion Frame Four}
+\end{table}
+
+\begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Opinion Holder} & $<$Joe$>$\\ \hline
+\textbf{Subject (Target)} & $<$caesar salad$>$ \\ \hline
+\textbf{Aspect} & $<$salad dressing$>$ \\ \hline
+\textbf{Evaluation} & $<$oily$>$ \\ \hline
+\end{tabular}}
+\caption{Opinion Frame Four}
+\end{table}
+
+
+\question{Problem 5}{Coreference Chains}
+
+\begin{equation}
+\setlength\fboxsep{0.25cm}
+\setlength\fboxrule{0.4pt}
+\boxed{MUC \ Recall = \sum_{i \in N_k} ( \vert K_i \vert - \vert p(K_i) \vert ) / \sum_{i \in N_k} ( \vert K_i \vert - 1)}
+\end{equation}
+
+\begin{equation}
+\setlength\fboxsep{0.25cm}
+\setlength\fboxrule{0.4pt}
+\boxed{MUC \ Precision = \sum_{i \in N_r} ( \vert R_i \vert - \vert p(R_i) \vert ) / \sum_{i \in N_r} ( \vert R_i \vert - 1)}
+\end{equation}
+
+\part{a}
+
+\begin{equation}
+\setlength\fboxsep{0.25cm}
+\setlength\fboxrule{0.4pt}
+\boxed{B^3 \ Precision = }
+\end{equation}
+
+\part{b}
+
+
+\end{document}

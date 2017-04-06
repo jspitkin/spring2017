@@ -1,0 +1,63 @@
+\documentclass[english,course]{Notes}
+
+\title{Lecture 21: Unsupervised Learning}
+\subject{Theory of Machine Learning}
+\author{Instructor: Aditya Bhaskara \qquad Scribe: Jake Pitkin}
+\date{29}{03}{2017}
+\place{{\bf CS 5966/6966: Theory of Machine Learning}}
+
+\newcommand{\Tr}{\text{Tr}}
+\newcommand{\iprod}[1]{\langle #1 \rangle}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\su}[1]{^{(#1)}}
+\newcommand{\bu}{\mathbf{u}}
+\renewcommand{\deg}{\text{deg}}
+
+\begin{document}
+\vspace{-10pt}
+\begin{abstract}
+In this lecture, we introduce the concept of unsupervised learning by looking at a commonly used and broad statistical technique called clustering. We look at using a mixture of Gaussian distributions to cluster data points as well as the \textit{k}-means optimization problem and algorithm.
+\end{abstract}
+
+%%% Notes start in detail
+\section{Introduction}
+
+Similar to other forms of learning we have studied, the goal of unsupervised learning is to discover patterns in a set of data. It is unique from supervised learning or reinforcement learning in two main ways. First, data points do not come with labels and the goal is rarely to just classify the data. Second, there is no "ground truth" or evaluation of accuracy as the data points are unlabeled. Unsupervised learning is desirable as annotated data is rare and expensive to produce. In contrast, unlabeled data is typically plentiful and much easier to obtain in large quantities.
+
+\section{Motivating Examples}
+
+As motivation for unsupervised learning techniques, we will briefly look at three example applications.
+
+\textbf{Movie Recommendations}
+
+Consider a service such as Netflix that is interested in making movie recommendations. They could keep a matrix of \textit{movies} $\times$ \textit{users} where the entries in the matrix are say a rating on a scale of $1-5$. As there exists a large number of \textit{movies} and \textit{users} this will be a sparse matrix.
+
+$$\begin{bmatrix}
+  & user_1  & \dots & \dots & user_n\\
+    movie_1 & & 3\\
+    \vdots  \\
+    \vdots  & & & & 4\\
+    movie_m & 2
+\end{bmatrix} $$ 
+
+Now say we want to determine the likelihood that $user_i$ would enjoy $movie_j$. By using the data points we do have, we could look at the attributes of those movies and users in an attempt to find a hidden structure in the data. This hidden structure could then be used to guide our recommendation process. \\
+
+\textbf{Cocktail Party Problem}
+
+Imagine being at a cocktail party where the room is noisy from multiple separate conversations occurring simultaneously. There is a spy in the room with a microphone that is picking up the superposition of a whole bunch of signals. After collecting this audio data, the goal of the spy is to break up the signals into "components" in an attempt to isolate each of the individual conversations. \\
+
+\textbf{Sparse Coding}
+
+In the field of neuroscience, there is work being done to understand how our brains encode sensory input of images. Each image is encoded as a sparse combination of a few basic patterns. Given visual signals, the brain finds a small set of these patterns such that the images we see can be formed as a sparse combination of these basic patterns. This allows the images to be understood by the brain using a relatively small number of neurons.
+
+\section{Unsupervised Learning}
+
+
+
+\section{Clustering}
+
+\section{The \textit{k}-Means Algorithm}
+
+\section{Conclusion}
+\end{document}

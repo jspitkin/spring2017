@@ -1,0 +1,10 @@
+Homework 3 due 04/12
+
+What to talk about for the presentation:
+
+What is the problem?
+What approaches are known? (technical presentation)
+What does the paper do?
+How the paper does it? (math) - the audience doesn't need to understand this section
+
+~20 minutes to present

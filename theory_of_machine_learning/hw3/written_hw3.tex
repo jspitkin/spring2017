@@ -80,11 +80,29 @@ We saw in class a proof that the VC dimension of the class of $n$-node, $m$-edge
 
 \fbox{ \parbox{1\linewidth}{
 
+From the text, we know a feedforward neural network is defined as a directed acyclic graph. It's known that the maximum number of edges a DAG can contain is $n(n - 1)/2$. To see this, the first node can point to all other nodes but itself, the next can point to all nodes other than itself and the first node and so on. 
+
+$$(n - 1) + (n - 2) + ... + 2 + 1 = \sum_{i = 1}^{n - 1} i = \frac{n(n - 1)}{2}$$
+
+Given the maximum number of edges a network can contain is $n(n - 1)/2$, we can observe that there exists at most $n(n-1)/2 \choose m$ network layouts with $n$ nodes and $m$ edges. Each distinct network layout is defined by \textit{choosing} $m$ edges from a maximum possible $n(n-1)/2$ edges. Thus, the binomial coefficient captures all possible network layouts and is an upper bound.
+
 } }
 
 \part{b} Given a network layout, argue that the number of `possible networks' is at most $2^m(n+1)^n$. [HINT: what can you say about the potential values for the thresholds?]
 
 \fbox{ \parbox{1\linewidth}{
+
+Given a network layout, the number of 'possible networks' is defined by the number of possible threshold and edge weight combinations. Consider a feedforward neural network with $n$ nodes and $m = n(n - 1)/2$ edges, which is the maximum number of edges a DAG can contain (as described in part a). \\
+
+From the problem, we are assuming the weights are binary $(0/1)$. It follows that given $m$ edges, that can each take a value from $\{0, 1\}$, there are $2^m$ possible ways to select these weights. \\
+
+The network is constructed such that node $n_i$ has an in-degree of $(n - i)$ (from the proof of constructing a DAG with the maximal number of edges). As such, node $n_i$ has a potential threshold value of $(n - i)$ as the edge weights can take a value from $\{0, 1 \}$. This gives
+
+$$(n - 1) * (n - 2) + ... + 2 + 1 = \prod_{i = 1}^{n - 1} i = (n - 1)!$$
+
+potential values for the thresholds. It is clear that $(n - 1)! < (n + 1)^n$. Thus, the number of 'possible networks' given by the feedforward neural network with the maximal number of edges (which maximizes the range of potential values for the thresholds) is upper bounded by $2^m(n+1)^n$.
+
+$$2^m(n - 1)! \leq 2^m(n+1)^n$$
 
 } }
 

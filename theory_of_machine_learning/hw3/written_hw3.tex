@@ -10,6 +10,9 @@
 %    5. You can include graphics by using the command \includegraphics{FILENAME}
 %
 \documentclass[11pt]{article}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
@@ -129,12 +132,67 @@ Let us consider networks in which each node computes a rectified linear (ReLU) f
 \part{a} Consider a single (real valued) input $x$. Show how to compute a ``triangle wave'' using one hidden layer (constant number of nodes) connected to the input, followed by one output $f$. Formally, we should have $f(x) = 0$ for $x \leq 0$, $f(x) = 2x$ for $0 \leq x \leq 1/2$, $f(x) = 2(1 - x)$ for $1/2 \leq x \leq 1$, and $f(x) = 0$ for $x \geq 1$. [HINT: choose the thresholds and coefficients for the ReLU's appropriately.] [HINT2: play with a few ReLU networks, and try to plot the output as a function of the input.]
 
 \fbox{ \parbox{1\linewidth}{
+After some experimentation, I came up with a neural network with one hidden layer of size two that computes the given triangle wave function. \\
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+
+  \tikzstyle{every state}=[fill=white,draw=none,text=black]
+
+  \node[]                     (A)                    {$x$};
+  \node[draw, circle]         (B) [above right of=A] {$y_1$};
+  \node[draw, circle]         (D) [below right of=A] {$y_2$};
+  \node[draw, circle]         (C) [below right of=B] {$f$};
+
+  \path (A) edge              node {} (B)
+  		(A) edge			  node {} (D)
+        (B) edge              node {} (C)
+        (D) edge              node {} (C);
+\end{tikzpicture}
+\end{figure}
+
+$$y_1 = max \{ 0, 2x - 1 \} \qquad y_2 = max \{ 0, -2x + 1 \} \qquad f = max \{0, - y_1 - y_2 + 1 \}$$
+
+As a function of $x$ this is defined as 
+
+$$f(x) = max(0 , -max(0, 2x - 1) - max(0, -2x + 1) + 1)$$
 
 } }
 
 \part{b} What happens if you stack the network on top of itself? (Describe the function obtained). [Formally, this means the output of the network you constructed above is fed as the input to an identical network, and we are interested in the final output function.]
 
 \fbox{ \parbox{1\linewidth}{
+Taking the network from part a, we can stack the network on top of itself
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+
+  \tikzstyle{every state}=[fill=white,draw=none,text=black]
+
+  \node[]                     (A)                    {$x$};
+  \node[draw, circle]         (B) [above right of=A] {$y_1$};
+  \node[draw, circle]         (D) [below right of=A] {$y_2$};
+  \node[]                     (C) [below right of=B] {$x$};
+  \node[draw, circle]         (E) [above right of=C] {$y_1$};
+  \node[draw, circle]         (F) [below right of=C] {$y_2$};
+  \node[draw, circle]         (G) [below right of=E] {$f$};
+
+  \path (A) edge              node {} (B)
+  		(A) edge			  node {} (D)
+        (B) edge              node {} (C)
+        (D) edge              node {} (C)
+        (C) edge			  node {} (E)
+        (C) edge			  node {} (F)
+        (F) edge			  node {} (G)
+        (E) edge			  node {} (G);
+\end{tikzpicture}
+\end{figure}
+
+$$y_1 = max \{ 0, 2x - 1 \} \qquad y_2 = max \{ 0, -2x + 1 \} \qquad f = max \{0, - y_1 - y_2 + 1 \}$$
 
 } }
 

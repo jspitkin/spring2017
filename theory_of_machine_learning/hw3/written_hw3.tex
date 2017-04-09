@@ -33,11 +33,42 @@
 
 \question{Problem 10}
 
-Consider the simple experts setting: we have $n$ experts $E1, ... \ ,En$, and each one makes a $0/1$ prediction each morning. Using these predictions, we need to make a prediction each morning, and at the end of the day we get a loss of $0$ if we predicted right, and $1$ if we made a mistake. This goes on for $T$ days.
+Consider the simple experts setting: we have $n$ experts $E_1, ... \ ,E_n$, and each one makes a $0/1$ prediction each morning. Using these predictions, we need to make a prediction each morning, and at the end of the day we get a loss of $0$ if we predicted right, and $1$ if we made a mistake. This goes on for $T$ days.
 
 Consider an algorithm that at every step, goes with the prediction of the `best' (i.e., the one with the least mistakes so far) expert so far. Suppose that ties are broken by picking the expert with a smaller index. Give an example in which this strategy can be really bad -- specifically, the number of mistakes made by the algorithm is roughly a factor $n$ worse than that of the best expert in hindsight.
 
 \fbox{ \parbox{1\linewidth}{
+
+We will show that given $n$ experts and this algorithm, we can construct an adversarial scenario where the algorithm makes a factor of $n$ more mistakes than the best expert. Consider the scenario where the true label is $0$ for all $T$ days. Each experts prediction is based on the following function of the current day $t$
+
+$$
+prediction_i(t) = \left\{
+        \begin{array}{ll}
+            1 & \quad t \ mod \ n = i - 1\\
+            0 & \quad otherwise
+        \end{array}
+    \right.
+$$
+
+In this scenario the algorithm will make $T$ mistakes (always predicts wrong) and the best expert will be wrong $T / n$ number of times. \newline 
+
+To give a concrete example, consider the scenario where we have $3$ experts and we run the algorithm for 9 days.
+
+\begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c | c | c | c | c | c | c | c | c |}
+\hline
+expert / $t$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\ \hline
+$E_1$ & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
+$E_2$ & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\ \hline
+$E_3$ & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 \\ \hline
+true prediction & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+selected expert & $E_1$ & $E_2$ & $E_3$ & $E_1$ & $E_2$ & $E_3$ & $E_1$ & $E_2$ & $E_3$ \\ \hline
+\end{tabular}}
+\end{table}
+
+We can see that in this example the algorithm always makes a mistake. Each expert is tied for being the best expert as they are each wrong $T/n$ or $3$ times. We have shown that this algorithm can make a factor of $n$ more mistakes than the best expert.
 
 } }
 

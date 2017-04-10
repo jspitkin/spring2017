@@ -1,9 +1,0 @@
-Integer programming - general language to express the restrictions of inference. Search over a discrete set.
-Allows injection of "knowledge" into the inference in the form of constraints.
-NP hard in general to solve.
-Give it to commerical solvers such as Gurobi.
-Can approximate to linear programs and hope for the best.
-
-Linear programming - minimizing a linear objective function subject to a finite number of linear constraints (equality or inequality).
-
-

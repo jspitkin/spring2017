@@ -65,7 +65,6 @@ def get_noun_phrases(sentence):
     for m in match:
         noun_phrases.append(m)
 
-    print('noun phrases:', noun_phrases)
     return noun_phrases
 
 
@@ -108,3 +107,24 @@ def pos_tag_tokens(tokens):
 def remove_common_words(tokens):
     common_words = set(['a', 'an', 'the', 'in'])
     return list(set(tokens) - set(common_words))
+
+
+def set_context_features(candidates, sentences):
+    tokenized_sentences = []
+    for sentence in sentences:
+        tokenized_sentences.append(tokenize(sentence))
+    for candidate in candidates:
+        containing_sentence = tokenized_sentences[candidate['sentence_index']]
+        candidate['sent-len'] = len(containing_sentence)
+        candidate['length'] = len(candidate['phrase'].split())
+        previous_token = containing_sentence[0]
+        index = 0
+        for token in containing_sentence[1:]:
+            if token == candidate['phrase'].split()[0]:
+                candidate['left-sent-len'] = index
+                candidate['prev-word'] = previous_token
+            if previous_token == candidate['phrase'].split()[-1]:
+                candidate['right-sent-len'] = len(containing_sentence) - index - 1
+                candidate['next-word'] = token
+            previous_token = token
+            index += 1

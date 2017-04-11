@@ -109,6 +109,15 @@ def remove_common_words(tokens):
     return list(set(tokens) - set(common_words))
 
 
+def set_question_features(candidates, examples):
+    training_examples = []
+    for candidate in candidates:
+        for example in examples:
+            training_examples.append(candidate)
+    return training_examples
+
+
+
 def set_context_features(candidates, sentences):
     tokenized_sentences = []
     for sentence in sentences:
@@ -128,3 +137,7 @@ def set_context_features(candidates, sentences):
                 candidate['next-word'] = token
             previous_token = token
             index += 1
+        if 'left-sent-len' not in candidate:
+            candidate['left-sent-len'] = 0
+        if 'right-sent-len' not in candidate:
+            candidate['right-sent-len'] = 0

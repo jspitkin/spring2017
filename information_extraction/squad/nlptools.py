@@ -117,7 +117,6 @@ def set_question_features(candidates, examples):
     return training_examples
 
 
-
 def set_context_features(candidates, sentences):
     tokenized_sentences = []
     for sentence in sentences:

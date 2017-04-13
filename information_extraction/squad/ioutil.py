@@ -23,16 +23,10 @@ def read_examples_from_file(path):
                 context_key += 1
     return {'examples':examples, 'contexts':contexts}
 
-def write_feature_vectors(path, candidates):
+def write_feature_vectors(path, vectors):
     with open(path, 'w') as feature_vector_file:
-        for candidate in candidates:
-            feature_vector = []
-            feature_vector.append(candidate['label'])
-            feature_vector.append(candidate['sent-len'])
-            feature_vector.append(candidate['length'])
-            feature_vector.append(candidate['left-sent-len'])
-            feature_vector.append(candidate['right-sent-len'])
-            for entry in feature_vector:
+        for vector in vectors:
+            for entry in vector:
                 feature_vector_file.write(str(entry))
                 feature_vector_file.write(' ')
             feature_vector_file.write('\n')

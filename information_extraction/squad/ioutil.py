@@ -21,6 +21,7 @@ def read_examples_from_file(path):
                         example['possible_answers'].append(answer)
                     examples.append(example)
                 context_key += 1
+            break
     return {'examples':examples, 'contexts':contexts}
 
 def write_feature_vectors(path, vectors):

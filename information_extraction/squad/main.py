@@ -42,13 +42,16 @@ def main():
     training_vectors = []
     for key, context in corpora.items():
         print('training:', key)
-        training_vectors.extend(feature_vectors_for_context(key, context, examples))
+        #training_vectors.extend(feature_vectors_for_context(key, context, examples))
+
+    for training_vector in training_vectors:
+        del training_vector[0]
 
     # Write the feature vectors to file
-    ioutil.write_feature_vectors('train_vectors.txt', training_vectors)
+    #ioutil.write_feature_vectors('train_vectors.txt', training_vectors)
 
     # Train a logistic regression model
-    model = lr.train()
+    model = lr.train_even()
 
     # Make the predictions for each development example and write to file
     make_predictions(model, dev, prediction_path)
@@ -75,27 +78,29 @@ def make_predictions(model, dev, prediction_path):
     # For each example, create feature vectors for each candidate answer
     for key, example_group in examples.items():
         print('prediciton:', key)
-        total_examples = len(example_group)
+        total_examples += len(example_group)
         for example in example_group:
             context = corpora[key]
-            candidates, candidate_vectors = feature_vectors_for_example(context, example)
+            candidate_vectors = feature_vectors_for_example(context, example)
 
             possible_answers = set([answer['text'] for answer in example['possible_answers']])
-            for candidate in candidates:
-                if candidate['phrase'] in possible_answers:
+            for candidate_vector in candidate_vectors:
+                if candidate_vector[0] in possible_answers:
                     correct_answer_in_candidates += 1
                     break
-
 
             # Evaluate each candidate against the logistic regression model
             best_candidate = ''
             best_confidence_score = 0
             for index, candidate_vector in enumerate(candidate_vectors):
+                candidate_phrase = candidate_vector[0]
+                # Pop off the label and the phrase
+                candidate_vector.pop(0)
                 candidate_vector.pop(0)
                 prediction = model.predict_proba([candidate_vector])
                 if prediction[0][1] > best_confidence_score:
                     best_confidence_score = prediction[0][1]
-                    best_candidate = candidates[index]['phrase']
+                    best_candidate = candidate_phrase
 
             found_exact_match = False
             for possible_answer in possible_answers:
@@ -111,12 +116,9 @@ def make_predictions(model, dev, prediction_path):
 
             # Make prediction with the candidate with the highest score
             predictions[example['id']] = best_candidate
-        print('found answer:', correct_answer_in_candidates, 'example count:', total_examples)
-        print('exact matches:', exact_match, 'partial matches:', partial_match) 
-        print()
-        correct_answer_in_candidates = 0
-        exact_match = 0
-        partial_match = 0
+    print('found answer:', correct_answer_in_candidates, 'example count:', total_examples)
+    print('exact matches:', exact_match, 'partial matches:', partial_match) 
+    print()
 
     # Write the predictions to file
     ioutil.write_prediction_file(prediction_path, predictions)
@@ -142,11 +144,12 @@ def feature_vectors_for_example(context, example):
     candidates = nlptools.cull_candidate_list(candidates)
 
     # Create features for each of the candidates based on sentence context
-    #nlptools.set_context_features(candidates, sentences)
+    # nlptools.set_context_features(candidates, sentences)
     nlptools.set_question_features(candidates, sentences, vectorizer, tfidf_matrix)
+    nlptools.set_w_word_features(candidates)
 
     # Get feature vector based on features of the candidates
-    return candidates, get_feature_vectors(candidates)
+    return get_feature_vectors(candidates)
 
 
 def feature_vectors_for_context(key, context, examples):
@@ -197,13 +200,14 @@ def feature_vectors_for_context(key, context, examples):
     # Create features for each of the candidates based on sentence context
     #nlptools.set_context_features(candidates, sentences)
     nlptools.set_question_features(extended_candidates, sentences, vectorizer, tfidf_matrix)
+    nlptools.set_w_word_features(extended_candidates)
 
     # Get feature vector based on features of the candidates
-    return get_feature_vectors(candidates)
+    return get_feature_vectors(extended_candidates)
 
 
 def get_feature_vectors(candidates):
-    feature_vectors = [[candidate['label']] for candidate in candidates]
+    feature_vectors = [[candidate['phrase'], candidate['label']] for candidate in candidates]
     for index, candidate in enumerate(candidates):
         sorted(candidate)
         for key, value in candidate.items():

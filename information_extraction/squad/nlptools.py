@@ -130,7 +130,7 @@ def overlapping_words_minus_candidate(question, sentence, candidate):
 
 def set_question_features(candidates, sentences, vectorizer, tfidf_matrix):
     for candidate in candidates:
-        #candidate['lex-overlap'] = lexical_overlap(sentences[candidate['sentence_index']], candidate['phrase'], example['question'])
+        candidate['lex-overlap'] = lexical_overlap(sentences[candidate['sentence_index']], candidate['phrase'], candidate['question'])
         candidate['tfidf-whole-sentence'] = 0
         for word in overlapping_words(candidate['question'], sentences[candidate['sentence_index']]):
             tfidf_score = get_tfidf_score(vectorizer, tfidf_matrix, word, candidate['context_key'])
@@ -147,13 +147,46 @@ def set_question_features(candidates, sentences, vectorizer, tfidf_matrix):
         for word in candidate['phrase'].split():
             candidate['tfidf-span'] += get_tfidf_score(vectorizer, tfidf_matrix, word, candidate['context_key'])
                     
-def set_w_word_features(candidates, sentences, examples):
-    tokenized_sentences = []
-    for sentence in sentences:
-        tokenized_sentences.append(tokenize(sentence))
+
+def set_w_word_features(candidates):
+    # Set Boolean feature for the first 'w-word' found in the question or none if one isn't found.
     for candidate in candidates:
-        for example in examples:
-            question = [word.lower() for word in example['question'].split()]
+        # Set a contains a capitalized word feature as well
+        candidate['contains-capital'] = 0
+        for word in candidate['phrase']:
+            if word[0].isupper():
+                candidate['contains-capital'] = 1
+        candidate['w-word-who'] = 0
+        candidate['w-word-what'] = 0
+        candidate['w-word-where'] = 0
+        candidate['w-word-when'] = 0
+        candidate['w-word-which'] = 0
+        candidate['w-word-none'] = 0
+        found_w_word = False
+        question = [word.lower() for word in candidate['question'].split()]
+        for word in question:
+            if word.lower() == 'who':
+                candidate['w-word-who'] = 1
+                found_w_word = True
+                break
+            elif word.lower() == 'what':
+                candidate['w-word-what'] = 1
+                found_w_word = True
+                break
+            elif word.lower() == 'where':
+                candidate['w-word-where'] = 1
+                found_w_word = True
+                break
+            elif word.lower() == 'when':
+                candidate['w-word-when'] = 1
+                found_w_word = True
+                break
+            elif word.lower() == 'which':
+                candidate['w-word-which'] = 1
+                found_w_word = True
+                break
+        if not found_w_word:
+            candidate['w-word-none'] = 0
 
 def set_context_features(candidates, sentences):
     tokenized_sentences = []
@@ -167,17 +200,17 @@ def set_context_features(candidates, sentences):
         index = 0
         for token in containing_sentence[1:]:
             if token == candidate['phrase'].split()[0]:
-                #candidate['left-sent-len'] = index
+                candidate['left-sent-len'] = index
                 candidate['prev-word'] = previous_token
             if previous_token == candidate['phrase'].split()[-1]:
-                #candidate['right-sent-len'] = len(containing_sentence) - index - 1
+                candidate['right-sent-len'] = len(containing_sentence) - index - 1
                 candidate['next-word'] = token
             previous_token = token
             index += 1
-        #if 'left-sent-len' not in candidate:
-            #candidate['left-sent-len'] = 0
-        #if 'right-sent-len' not in candidate:
-            #candidate['right-sent-len'] = 0
+        if 'left-sent-len' not in candidate:
+            candidate['left-sent-len'] = 0
+        if 'right-sent-len' not in candidate:
+            candidate['right-sent-len'] = 0
 
 
 def get_tfidf_vectors(corpora):
@@ -201,5 +234,21 @@ def get_tfidf_score(vectorizer, matrix, word, context_key):
 
 
 def cull_candidate_list(candidate_list):
-    bad_candidates = set(['.'])
-    return [candidate for candidate in candidate_list if candidate['phrase']not in bad_candidates]
+    # Remove any candidate noun phrases unlikely to be an answer
+    bad_candidates = set(['.', 'a', 'an', 'the', 'he', 'she', 'it', 'them', 'mr.', 'mr', 'mrs.', 'mrs', 'who'])
+    new_candidate_list = []
+    for entry in candidate_list:
+        entry_words = entry['phrase'].split()
+        new_entry = ""
+        for entry_word in entry_words:
+            if entry_word not in bad_candidates:
+                new_entry = new_entry + entry_word + " "
+        entry['phrase'] = new_entry.strip()
+        if entry['phrase'] != '':
+            new_candidate_list.append(entry)
+
+    return new_candidate_list
+
+def combine_nps(nps):
+    # heuristic - two consecutive NPs that are both capitalized are one NP
+    return 5

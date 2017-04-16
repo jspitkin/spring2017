@@ -144,18 +144,46 @@ After some experimentation, I came up with a neural network with one hidden laye
   \node[]                     (A)                    {$x$};
   \node[draw, circle]         (B) [above right of=A] {$y_1$};
   \node[draw, circle]         (D) [below right of=A] {$y_2$};
-  \node[draw, circle]         (C) [below right of=B] {$f$};
+  \node[]                     (C) [below right of=B] {$f$};
 
-  \path (A) edge              node {} (B)
-  		(A) edge			  node {} (D)
-        (B) edge              node {} (C)
-        (D) edge              node {} (C);
+  \path (A) edge              node {2} (B)
+  		(A) edge			  node {-2} (D)
+        (B) edge              node {-1} (C)
+        (D) edge              node {-1} (C);
 \end{tikzpicture}
 \end{figure}
 
-$$y_1 = max \{ 0, 2x - 1 \} \qquad y_2 = max \{ 0, -2x + 1 \} \qquad f = max \{0, - y_1 - y_2 + 1 \}$$
+Where $y_1$ and $y_2$ are threshold functions that take in the input weighted defined as such
 
-As a function of $x$ this is defined as 
+$$
+y_1(z) = \left\{
+        \begin{array}{ll}
+            z - 1 & \quad z > 1\\
+            0 & \quad otherwise
+        \end{array}
+    \right.
+$$
+$$    
+y_2(z) = \left\{
+        \begin{array}{ll}
+            z + 1 & \quad z > -1\\
+            0 & \quad otherwise
+        \end{array}
+    \right.
+$$
+
+and the \textit{output} function $f$ is also a threshold function
+
+$$    
+f(z_1, z_2) = \left\{
+        \begin{array}{ll}
+            z_1 + z_2 + 1 & \quad z_1 + z_2 > -1\\
+            0 & \quad otherwise
+        \end{array}
+    \right.
+$$
+
+This network is defining a composition of 3 ReLU functions, which as a function of $x$ can be expressed as such 
 
 $$f(x) = max(0 , -max(0, 2x - 1) - max(0, -2x + 1) + 1)$$
 

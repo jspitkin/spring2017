@@ -187,12 +187,16 @@ This network is defining a composition of 3 ReLU functions, which as a function 
 
 $$f(x) = max(0 , -max(0, 2x - 1) - max(0, -2x + 1) + 1)$$
 
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{13a.png}}
+\end{figure}
+
 } }
 
 \part{b} What happens if you stack the network on top of itself? (Describe the function obtained). [Formally, this means the output of the network you constructed above is fed as the input to an identical network, and we are interested in the final output function.]
 
 \fbox{ \parbox{1\linewidth}{
-Taking the network from part a, we can stack the network on top of itself
+Taking the network from part a, we can stack the network on top of itself where $y_1$, $y_2$, and $f$ are defined as they are defined in part a
 
 \begin{figure}[H]
 \centering
@@ -204,30 +208,52 @@ Taking the network from part a, we can stack the network on top of itself
   \node[]                     (A)                    {$x$};
   \node[draw, circle]         (B) [above right of=A] {$y_1$};
   \node[draw, circle]         (D) [below right of=A] {$y_2$};
-  \node[]                     (C) [below right of=B] {$x$};
+  \node[]                     (C) [below right of=B] {$g$};
   \node[draw, circle]         (E) [above right of=C] {$y_1$};
   \node[draw, circle]         (F) [below right of=C] {$y_2$};
-  \node[draw, circle]         (G) [below right of=E] {$f$};
+  \node[]         (G) [below right of=E] {$f$};
 
-  \path (A) edge              node {} (B)
-  		(A) edge			  node {} (D)
-        (B) edge              node {} (C)
-        (D) edge              node {} (C)
-        (C) edge			  node {} (E)
-        (C) edge			  node {} (F)
-        (F) edge			  node {} (G)
-        (E) edge			  node {} (G);
+  \path (A) edge              node {2} (B)
+  		(A) edge			  node {-2} (D)
+        (B) edge              node {-1} (C)
+        (D) edge              node {-1} (C)
+        (C) edge			  node {2} (E)
+        (C) edge			  node {-2} (F)
+        (F) edge			  node {-1} (G)
+        (E) edge			  node {-1} (G);
 \end{tikzpicture}
 \end{figure}
 
-$$y_1 = max \{ 0, 2x - 1 \} \qquad y_2 = max \{ 0, -2x + 1 \} \qquad f = max \{0, - y_1 - y_2 + 1 \}$$
+We can define $f(x)$ as a composition of $g(x)$ where $g(x)$ is the output of the initial network and becomes input for the identical second network
+
+$$g(x) = max(0 , -max(0, 2x - 1) - max(0, -2x + 1) + 1)$$
+
+$$f(x) = max(0 , -max(0, 2g(x) - 1) - max(0, -2g(x) + 1) + 1)$$
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.5\linewidth]{13b.png}}
+\end{figure}
 
 } }
 
 \part{c} Prove that there is a ReLU network with one input variable $x$, $2k+O(1)$ layers, all coefficients and thresholds being constants, that computes a function that has $2^k$ ``peaks'' in the interval $[0,1]$.
 
 \fbox{ \parbox{1\linewidth}{
+Using induction we will prove that as the number of layers in the ReLU network grows linearly the number of "peaks" in the interval $[0, 1]$ grows exponentially.\\ 
 
+\textit{base case:} In \textit{part a} we constructed a ReLU network that had a single peak and O(1) layers ($k = 0$ and as such $2(0) + O(1)$ layers and $2^0 = 1$ peak).\\
+
+\textit{inductive hypothesis:} For all ReLU networks with $2k + O(1)$ layers, the network contains $2^k$ peaks. \\
+
+\textit{inductive step:} We will use the hypothesis that a ReLU network with $2k + O(1)$ layers contains $2^k$ peaks implies that a ReLU network with $2(k + 1) + O(1)$ layers contains $2^{k + 1}$ peaks. \\
+
+Each peak $k$ in the network has a value of $1$ which can be observed by graphing the triangle wave function. Each time we add another copy of the network on top of itself (as seen in part b) the output of the previous "network" becomes the input for the new "network". We can observe an input of $1$ to the network produces an output of 0.
+
+$$f(x) = max(0 , -max(0, 2x - 1) - max(0, -2x + 1) + 1)$$
+
+As such each $k$ peak in the network becomes a valley when a new network is added to the overall network. Additionally, each $k$ peak outputs the value $0.5$ twice which will produce two new peaks in the overall network. The overall network gains $2$ layers each time we add an additional network stack and the number of peaks doubles. \\
+
+Thus when a network contains $2(k + 1) + O(1)$ layers, it will contain $2^{k + 1}$ peaks. 
 } }
 
 \question{Problem 14}

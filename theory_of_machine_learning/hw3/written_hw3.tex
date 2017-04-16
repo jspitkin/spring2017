@@ -122,6 +122,24 @@ Consider a neural network consisting of (resp.) the input layer $x$, hidden laye
 Now suppose that all the weights are initialized to 0, and suppose we start performing SGD using backprop, with a fixed learning rate. Show that at every time step, all the edge weights in a layer are equal.
 
 \fbox{ \parbox{1\linewidth}{
+We suppose that all the weights $\mathbf{w}$ are initialized to $0$ before SGD is performed on the neural network. We will show that at every time step, all of the edge weights in a layer update by the same quantity keeping them equal. At each time step $t$ we sample $(\mathbf{x}, \mathbf{y}) \sim \mathcal{D}$, calculate the gradient $\mathbf{v_t}$ using the backpropagation algorithm and update the weights $\mathbf{w}$.\\ 
+
+The input to the backpropagation algorithm is the sampled example $(\mathbf{x}, \mathbf{y})$, weight vector $\mathbf{w}$, the network $(V, E)$, and an activation function $\sigma$. In this example we have three hidden layers $x$, $y$, and $z$. During the \textit{forward step} of the backprop we set $\mathbf{o_0} = \mathbf{x}$ and calculate $a_{t,i}$ and $o_{t,i}$ in order where $t$ is the current hidden layer and $i$ is the node in that layer. The values for $a_{t,i}$ and $o_{t,i}$ are calculated as such:
+
+$$a_{t,i} = \sum_{j = 1}^{k_{t-1}} \mathbf{w}_{t-1,i,j} * o_{t-1,j}$$
+$$o_{t,i} = \sigma(a_{t,i})$$
+
+The important observation here is all the weights $\mathbf{w}_{t-1,i,j}$ are zero causing all $a_{t,i}$ to be zero. As such, all $o_{t,i}$ (for a given $t$ or layer) with be equal. \\
+
+During the \textit{backward step} these $o_{t,i}$ are used to calculate the partial derivatives that define the gradient
+
+$$\delta_{t,i} = \sum_{j = 1}^{k_{t+1}} \mathbf{w}_{t,j,i} * \delta_{t+1,j} * \sigma^\prime(a_{t+1,j})$$
+
+As such during the update step in SGD using the $\mathbf{v_i}$ gradients produced by backprop
+
+$$\mathbf{w}^{(i + 1)} = \mathbf{w}^{(i)} - \eta(\mathbf{v_i} + \lambda\mathbf{w^{(i)})}$$
+
+Will produce identical updates to the weights for each node in a layer. Thus all the edge weights in a layer stay equal at each time step $t$.
 
 } }
 

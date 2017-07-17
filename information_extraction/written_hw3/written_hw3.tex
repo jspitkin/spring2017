@@ -74,11 +74,11 @@ hit & flee & $<$hit, flee$>$ \\ \hline
 \hline
 \textbf{Current Sentence NP} & \textbf{Previous Sentence NP} & \textbf{Discourse Focus Feature}\\
 \hline
-the massive tornado (S2)&  A large tornado (S1)& $<$tornado, PP(by), subject$>$ \\ \hline
-The injured people (S3)&  Several People (S2)& $<$people, subject, subject$>$ \\ \hline
-the hospital (S4)&  the hospital (S3)& $<$hospital, , $>$ \\ \hline
-Huntsville (S5)&  central Huntsville (S4)& $<$Huntsville, , $>$ \\ \hline
-the tornado (S5)&  The tornado (S4)& $<$tornado, , $>$ \\ \hline
+the massive tornado (S2)&  A large tornado (S1)& $<$tornado, PP(by), Subject$>$ \\ \hline
+The injured people (S3)&  Several People (S2)& $<$people, Subject, Direct Object$>$ \\ \hline
+the hospital (S4)&  the hospital (S3)& $<$hospital, Direct Object, Direct Object $>$ \\ \hline
+Huntsville (S5)&  central Huntsville (S4)& $<$Huntsville, Subject, Direct Object$>$ \\ \hline
+the tornado (S5)&  The tornado (S4)& $<$tornado, Direct Object, Subject$>$ \\ \hline
 \end{tabular}}
 \caption{Discourse Focus Features for S1-S5}
 \end{table}
@@ -92,6 +92,13 @@ S4: LOCATION = "central Huntsville" \\
 S5: LOCATION = "Huntsville"} \newline
 
 If the sentence classifier labels sentences S2, S3 and S4 as event contexts, what will LINKER's final output be?
+
+The LINKER's final output will be the role filler extractors produced from sentences S2, S3, and S4.
+
+\fbox{ \parbox{0.70\linewidth}{
+VICTIM = "Several people" and "The injured people"\\
+LOCATION = "central Huntsville"
+} }
 
 \question{Problem 2}{Event Extraction}
 
@@ -255,7 +262,7 @@ Show all of the opinion frames ("opinion units") that should be produced by the 
 \caption{Opinion Frame Four}
 \end{table}
 
-
+\newpage
 \question{Problem 5}{Coreference Chains}
 
 \begin{equation}
@@ -276,14 +283,14 @@ To compute recall, first we will compute the partitions intersecting $k_i$ with 
 \begin{align*}
 p(k_1) &= \{\{a\},\{b, c\},\{d\}\} \\
 p(k_2) &= \{\{e\},\{f\}\} \\
-p(k_3) &= \{\{g\},\{h\},\{i, j\},\{k\}\} \\
+p(k_3) &= \{\{g, h\},\{i, j\},\{k\}\} \\
 p(k_4) &= \{\{n\},\{m\}\} \\
 p(k_5) &= \{\{o\}\}
 \end{align*}
 
 Using eq. 1, we will first compute the numerator
 
-$$\sum_{i \in N_k} ( \vert k_i \vert - \vert p(k_i) \vert ) = (4 - 3) + (2 - 2) + (5 - 4) + (2 - 2) + (1 - 1) = 2$$
+$$\sum_{i \in N_k} ( \vert k_i \vert - \vert p(k_i) \vert ) = (4 - 3) + (2 - 2) + (5 - 3) + (2 - 2) + (1 - 1) = 3$$
 
 Next we use eq. 1 again and compute the denominator
 
@@ -292,7 +299,7 @@ $$\sum_{i \in N_k} ( \vert k_i \vert - 1) = (4 - 1) + (2 - 1) + (5 - 1) + (2 - 1
 Combining these gives us the MUC recall 
 
 \fbox{ \parbox{0.30\linewidth}{
-\textbf{MUC recall:} $\mathbf{2 / 9 = 0.222}$
+\textbf{MUC recall:} $\mathbf{3 / 9 = 0.3333}$
 } }
 \newline 
 
@@ -309,7 +316,7 @@ p(r_6) &= \{\{m\}\}
 
 Using eq. 2, we will first compute the numerator
 
-$$\sum_{i \in N_r} ( \vert r_i \vert - \vert p(r_i) \vert ) = (3 - 2) + (2 - 1) + (3 - 3) + (2 - 2) + (1 - 1) = 2$$
+$$\sum_{i \in N_r} ( \vert r_i \vert - \vert p(r_i) \vert ) = (3 - 2) + (2 - 1) + (3 - 3) + (2 - 2) + (3 - 2) + (1 - 1) = 3$$
 
 Next we use eq. 2 again and compute the denominator
 
@@ -317,8 +324,8 @@ $$\sum_{i \in N_r} ( \vert r_i \vert - 1) = (3 - 1) + (2 - 1) + (3 - 1) + (2 - 1
 
 Combining these gives us the MUC precision
 
-\fbox{ \parbox{0.32\linewidth}{
-\textbf{MUC precision:} $\mathbf{2 / 8 = 0.25}$
+\fbox{ \parbox{0.35\linewidth}{
+\textbf{MUC precision:} $\mathbf{3 / 8 = 0.375}$
 } }
 
 \part{b} Compute recall and precision for the response chains above using the $B^3$ scoring metric. Be sure to show all your work!
@@ -329,20 +336,53 @@ To compute the recall for an entity E, we find the response chain $r_j$ that con
 
 \begin{align*}
 recall \ a &= (\vert k_1 \vert \cap \vert r_1 \vert) / \vert k_1 \vert = 1 / 4 \\
-recall \ b &= (\vert k_1 \vert \cap \vert r_2 \vert) / \vert k_1 \vert =  \\ 
-recall \ c &= (\vert k_1 \vert \cap \vert r_2 \vert) / \vert k_1 \vert =  \\
-recall \ d &= (\vert k_1 \vert \cap \vert r_3 \vert) / \vert k_1 \vert =  \\ 
-recall \ e &= (\vert k_2 \vert \cap \vert r_3 \vert) / \vert k_2 \vert =  \\ 
-recall \ f &= (\vert k_2 \vert \cap \vert r_4 \vert) / \vert k_2 \vert =  \\
-recall \ g &= (\vert k_3 \vert \cap \vert r_1 \vert) / \vert k_3 \vert =  \\ 
-recall \ h &= (\vert k_3 \vert \cap \vert r_1 \vert) / \vert k_3 \vert =  \\
-recall \ i &= (\vert k_3 \vert \cap \vert r_5 \vert) / \vert k_3 \vert =  \\
-recall \ j &= (\vert k_3 \vert \cap \vert r_5 \vert) / \vert k_3 \vert =  \\
-recall \ k &= (\vert k_3 \vert \cap \vert r_3 \vert) / \vert k_3 \vert =  \\
-recall \ m &= (\vert k_4 \vert \cap \vert r_6 \vert) / \vert k_4 \vert =  \\
-recall \ n &= (\vert k_4 \vert \cap \vert r_5 \vert) / \vert k_4 \vert =  \\
-recall \ o &= (\vert k_5 \vert \cap \vert r_4 \vert) / \vert k_5 \vert = 
+recall \ b &= (\vert k_1 \vert \cap \vert r_2 \vert) / \vert k_1 \vert =  2 / 4\\ 
+recall \ c &= (\vert k_1 \vert \cap \vert r_2 \vert) / \vert k_1 \vert =  2 / 4\\
+recall \ d &= (\vert k_1 \vert \cap \vert r_3 \vert) / \vert k_1 \vert =  1 / 4\\ 
+recall \ e &= (\vert k_2 \vert \cap \vert r_3 \vert) / \vert k_2 \vert =  1 / 2\\ 
+recall \ f &= (\vert k_2 \vert \cap \vert r_4 \vert) / \vert k_2 \vert =  1 / 2\\
+recall \ g &= (\vert k_3 \vert \cap \vert r_1 \vert) / \vert k_3 \vert =  2 / 5\\ 
+recall \ h &= (\vert k_3 \vert \cap \vert r_1 \vert) / \vert k_3 \vert =  2 / 5\\
+recall \ i &= (\vert k_3 \vert \cap \vert r_5 \vert) / \vert k_3 \vert =  2 / 5\\
+recall \ j &= (\vert k_3 \vert \cap \vert r_5 \vert) / \vert k_3 \vert =  2 / 5\\
+recall \ k &= (\vert k_3 \vert \cap \vert r_3 \vert) / \vert k_3 \vert =  1 / 5\\
+recall \ m &= (\vert k_4 \vert \cap \vert r_6 \vert) / \vert k_4 \vert =  1 / 2\\
+recall \ n &= (\vert k_4 \vert \cap \vert r_5 \vert) / \vert k_4 \vert =  1 / 2\\
+recall \ o &= (\vert k_5 \vert \cap \vert r_4 \vert) / \vert k_5 \vert = 1 / 1
 \end{align*}
 
+Finally we take the sum of the entity recalls and divide by the total number of entities in the gold key chains
+$$ 1 / 14 * (1/4 + 2/4 + 2/4 + 1/4 + 1/2 + 1/2 + 2/5 + 2/5 + 2/5 + 2/5 + 1/5 + 1/2 + 1/2 + 1/1) = 1 / 14 * 6.3 = 0.45$$
+
+\fbox{ \parbox{0.32\linewidth}{
+\textbf{$B^3$ recall:} $\mathbf{6.3 / 14 = 0.45}$
+} }
+
+Computing the $B^3$ precision is similar but we swap the role of the key and response chains. First we will compute the precision of each entity E
+
+\begin{align*}
+precision \ a &= (\vert r_1 \vert \cap \vert k_1 \vert) \ \vert r_1 \vert =  1 / 3\\
+precision \ g &= (\vert r_1 \vert \cap \vert k_3 \vert) \ \vert r_1 \vert =  2 / 3\\
+precision \ h &= (\vert r_1 \vert \cap \vert k_3 \vert) \ \vert r_1 \vert =  2 / 3\\
+precision \ b &= (\vert r_2 \vert \cap \vert k_1 \vert) \ \vert r_2 \vert =  2 / 2\\
+precision \ c &= (\vert r_2 \vert \cap \vert k_1 \vert) \ \vert r_2 \vert =  2 / 2\\
+precision \ d &= (\vert r_3 \vert \cap \vert k_1 \vert) \ \vert r_3 \vert =  1 / 3\\
+precision \ e &= (\vert r_3 \vert \cap \vert k_2 \vert) \ \vert r_3 \vert =  1 / 3\\
+precision \ k &= (\vert r_3 \vert \cap \vert k_3 \vert) \ \vert r_3 \vert =  1 / 3\\
+precision \ f &= (\vert r_4 \vert \cap \vert k_2 \vert) \ \vert r_4 \vert =  1 / 2\\
+precision \ o &= (\vert r_4 \vert \cap \vert k_5 \vert) \ \vert r_4 \vert =  1 / 2\\
+precision \ i &= (\vert r_5 \vert \cap \vert k_3 \vert) \ \vert r_5 \vert =  2 / 3\\
+precision \ j &= (\vert r_5 \vert \cap \vert k_3 \vert) \ \vert r_5 \vert =  2 / 3\\
+precision \ n &= (\vert r_5 \vert \cap \vert k_4 \vert) \ \vert r_5 \vert =  1 / 3\\
+precision \ m &= (\vert r_6 \vert \cap \vert k_4 \vert) \ \vert r_6 \vert =  1 / 1\\	
+\end{align*}
+
+Finally we take the sum of the entity precisions and divide by the total number of entities in the response chains
+
+$$1/14 * (1/3 + 2/3 + 2/3 + 2/2 + 2/2 + 1/3 + 1/3 + 1/3 + 1/2 + 1/2 + 2/3 + 2/3 + 1/3 + 1/1) = 1/14 * 25/3$$
+
+\fbox{ \parbox{0.32\linewidth}{
+\textbf{$B^3$ precision:} $\mathbf{25 / 42 = 0.595}$
+} }
 
 \end{document}

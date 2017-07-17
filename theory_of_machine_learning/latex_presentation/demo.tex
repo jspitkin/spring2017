@@ -1,0 +1,388 @@
+mer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+%\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+% \usetheme{Luebeck}
+\usetheme{Madrid}
+%\usetheme{Malmoe}
+% \usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{algorithm2e}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Bandits]{Multi-Armed Bandits} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author[Cegielski-Johnson/Pitkin]{Maks Cegielski-Johnson\\Jake Pitkin} % Your name
+\institute[Utah] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+University of Utah \\ % Your institution for the title page
+%\medskip
+%\textit{maks.cegielski@gmail.com} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{Introduction} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+%\subsection{Setup} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+
+\begin{frame}
+\frametitle{Multi-armed Bandit Problem}
+A multi-armed bandit problem is a basic example of sequential decision problems with an exploration–exploitation trade-off. \\~\\
+
+This is the balance between staying with the option that gave highest payoffs in the past and exploring new options that might give higher payoffs in the future. \\~\\
+
+Mathematically, a multi-armed bandit is defined by the payoff process associated with each option.\\~\\
+
+At each time step, a unit resource is allocated to an action and some observable payoff is obtained. The goal is to maximize the total payoff obtained in a sequence of allocations.
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Origins of the name multi-armed bandit}
+The name refers to the American slang for a casino slot machine a “one-armed bandit”. \\~\\
+
+A player facing many slot machines at once is a sequential allocation problem as the player must repeatedly decide where to insert the next coin. (“multi-armed bandit”) \\~\\
+
+We will use the example of a player playing multiple slot machines, trying to minimize their regret by maximizing their profit, as a running example.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Applications}
+\textbf{Ad placement} - deciding which ad to deliver to the next visitor of a website.\\~\\
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item  Decisions such as topics, placement, and ad design.\\~\\
+\item  Payoff of how many users click through to the ad. \\~\\
+\end{itemize}
+
+\textbf{Packet routing} - choosing a path for a packet from a source to a destination.
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item  Each path’s payoff is the (negative) of the time it takes to deliver the packet. \\~\\
+\item Each edge’s weight will change with time as the congestion of the network changes. \\~\\
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Notation}
+
+\begin{itemize}
+\item Forecaster: the player
+\item $K$ is the number of bandits
+\item $X_{1,2}, X_{i,2}, \dots$: is the sequence of unknown rewards associated with arm $i=1\dots K$
+\item $t$: time step
+\item $I_t$: arm selected by the forecaster at time $t$
+\item $X_{I_t, t}$ reward at time $t$ from arm $I_t$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Regret}
+
+The regret after $n$ plays $I_1,\dots,I_n$ is defined by
+
+$$R_n = \max_{i=1,\dots,K}\Big(\sum_{t=1}^n X_{i,t}\Big) - \sum_{t=1}^n X_{I_t, t}$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Expected Regret and Pseudo-regret}
+In general, both rewards $X_{i,t}$ and the forecaster's choices $I_t$ might be stochastic. This gives us two notions of averaged regret:\\~\\
+
+\textbf{Expected Regret}:
+$$\mathbb{E}[R_n] = \mathbb{E}
+\bigg[
+\max_{i=1,\dots,K}\Big(\sum_{t=1}^n X_{i,t}\Big)
+-
+\sum_{t=1}^n X_{I_t, t}
+\bigg] $$
+\\~\\
+\textbf{Pseudo Regret}:
+$$\bar{R}_n = 
+\mathbb{E}
+\bigg[
+\sum_{t=1}^n X_{i,t}
+-
+\sum_{t=1}^n X_{I_t, t}
+\bigg]$$
+
+Expectation is taken with respect to the random draw of both rewards and forecaster's actions.
+\end{frame}
+
+\begin{frame}
+\frametitle{Stochastic Bandit Problem}
+Each arm $i = 1, ... , K$ corresponds to an unknown probability distribution $\nu_i$ on $[0, 1]$, and rewards $X_{i,t}$ are independent draws  from the distribution $\nu_i$ corresponding to the selected arm.
+
+\begin{figure}[H]
+  \centerline{\includegraphics[width=0.75\linewidth]{stochastic.png}}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Adversarial Bandit Problem}
+In this adversarial setting the goal is to obtain regret bounds in high
+probability or in expectation with respect to any possible randomization in the strategies used by the forecaster or the opponent, and irrespective of the opponent.
+\begin{figure}[H]
+\centerline{\includegraphics[width=0.75\linewidth]{adversarial.png}}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Markovian Bandit Problem}
+The third fundamental model of multi-armed bandits assumes that
+the reward processes are neither i.i.d. (like in stochastic bandits) nor
+adversarial. \\~\\
+
+
+\end{frame}
+
+\section*{Stochastic Bandit Problem}
+
+\begin{frame}
+\frametitle{Stochastic Bandit Problem}
+\end{frame}
+
+
+%\begin{frame}
+%\frametitle{Tabular TD(0) for estimating $v_\pi$ }
+%\begin{algorithm}[H]
+%	\label{alg:probability}
+%	\KwIn{the policy $\pi$ to be evaluated}
+%	Initialize $V(s)$ arbitrarily (e.g., $V(s) = 0,~ \forall s \in \mathcal{S}^+$)\\
+%	\ForEach{episode}{
+%		Intitialize $S$\\
+%		\ForEach{step of episode}{
+%			$A \leftarrow$ action given by $\pi$ for $S$\\
+%			Take action $A$, observe $R, S'$\\
+%			$V(S) \leftarrow V(S) + \alpha[R + \gamma V(S') - V(S)]$\\
+%			$S \leftarrow S'$\\
+%		}
+%	}
+%	
+%\end{algorithm}
+%\end{frame}
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Bullet Points}
+%\begin{itemize}
+%\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
+%\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
+%\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
+%\item Nam cursus est eget velit posuere pellentesque
+%\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+%\end{itemize}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Blocks of Highlighted Text}
+%\begin{block}{Block 1}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+%\end{block}
+%
+%\begin{block}{Block 2}
+%Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
+%\end{block}
+%
+%\begin{block}{Block 3}
+%Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
+%\end{block}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Multiple Columns}
+%\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+%
+%\column{.45\textwidth} % Left column and width
+%\textbf{Heading}
+%\begin{enumerate}
+%\item Statement
+%\item Explanation
+%\item Example
+%\end{enumerate}
+%
+%\column{.5\textwidth} % Right column and width
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+%
+%\end{columns}
+%\end{frame}
+
+%------------------------------------------------
+\section{Second Section}
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Table}
+%\begin{table}
+%\begin{tabular}{l l l}
+%\toprule
+%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+%\midrule
+%Treatment 1 & 0.0003262 & 0.562 \\
+%Treatment 2 & 0.0015681 & 0.910 \\
+%Treatment 3 & 0.0009271 & 0.296 \\
+%\bottomrule
+%\end{tabular}
+%\caption{Table caption}
+%\end{table}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Theorem}
+%\begin{theorem}[Mass--energy equivalence]
+%$E = mc^2$
+%\end{theorem}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+%\frametitle{Verbatim}
+%\begin{example}[Theorem Slide Code]
+%\begin{verbatim}
+%\begin{frame}
+%\frametitle{Theorem}
+%\begin{theorem}[Mass--energy equivalence]
+%$E = mc^2$
+%\end{theorem}
+%\end{frame}\end{verbatim}
+%\end{example}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Figure}
+%Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
+%%\begin{figure}
+%%\includegraphics[width=0.8\linewidth]{test}
+%%\end{figure}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+%\frametitle{Citation}
+%An example of the \verb|\cite| command to cite within the presentation:\\~
+%
+%This statement requires citation \cite{p1}.
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{References}
+%\footnotesize{
+%\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+%\bibitem[Smith, 2012]{p1} John Smith (2012)
+%\newblock Title of the publication
+%\newblock \emph{Journal Name} 12(3), 45 -- 678.
+%\end{thebibliography}
+%}
+%\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\Huge{\centerline{Questions/Discussion}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document} 

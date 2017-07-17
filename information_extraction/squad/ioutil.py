@@ -3,11 +3,13 @@ import json
 def read_examples_from_file(path):
     examples = []
     contexts = {}
-    context_key = 0
     with open(path, 'r') as dataset_file:
         dataset_json = json.load(dataset_file)
         dataset = dataset_json['data']
+        context_key = 0
         for catagory in dataset:
+            if catagory['title'] == 'Apollo_program':
+                print(context_key)
             for paragraph in catagory['paragraphs']:
                 contexts[context_key] = {'paragraph':paragraph['context'], 'title':catagory['title'], 'key':context_key}
                 for qas in paragraph['qas']:
@@ -21,7 +23,7 @@ def read_examples_from_file(path):
                         example['possible_answers'].append(answer)
                     examples.append(example)
                 context_key += 1
-            break
+
     return {'examples':examples, 'contexts':contexts}
 
 def write_feature_vectors(path, vectors):

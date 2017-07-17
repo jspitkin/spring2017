@@ -12,6 +12,9 @@
 \documentclass[11pt]{article}
 \usepackage{pgf}
 \usepackage{tikz}
+\usetikzlibrary{graphs}
+\usetikzlibrary{graphdrawing}
+\usegdlibrary{trees}
 \usetikzlibrary{arrows,automata}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{graphicx}
@@ -71,7 +74,7 @@ selected expert & $E_1$ & $E_2$ & $E_3$ & $E_1$ & $E_2$ & $E_3$ & $E_1$ & $E_2$ 
 \end{tabular}}
 \end{table}
 
-We can see that in this example the algorithm always makes a mistake. Each expert is tied for being the best expert as they are each wrong $T/n$ or $3$ times. We have shown that this algorithm can make a factor of $n$ more mistakes than the best expert.
+We can see that in this example the algorithm always makes a mistake as it will cycle through the experts and they each will predict $1$. Each expert is tied for being the best expert as they are each wrong $T/n$ or $3$ times. We have shown that this algorithm can make a factor of $n$ more mistakes than the best expert.
 
 } }
 
@@ -112,7 +115,24 @@ $$2^m(n - 1)! \leq 2^m(n+1)^n$$
 \part{c} Use these to show that the VC dimension of the class of binary-weight, threshold neural networks is $O((m+n)\log ⁡n)$.
 
 \fbox{ \parbox{1\linewidth}{
+\textit{claim:} A finite hypothesis class $\mathcal{H}$ has a VC dimension of at most $log_2 \vert \mathcal{H} \vert$.\\
 
+\textit{proof by contradiction:} Assume that the opposite $VC(\mathcal{C}) > log_2|C|$ is true. \\
+
+Take a finite instance space X of size d. There exists $2^d$ (the number of possible binary vectors of length $d$) ways to partition X. Thus the  $\mathcal{|H|} = 2^d$. \\
+
+Given that X is of size d, it holds that $0 \leq VC(C) \leq d$ as $\mathcal{H}$ can shatter \textbf{at most} d points (the size of the instance space). Visiting the initial assumption:
+
+$$VC(\mathcal{H}) > \log_2|H|$$
+$$VC(\mathcal{H}) > d$$
+
+Arriving at the contradiction $0 \leq VC(\mathcal{H}) \leq d$ and $VC(\mathcal{H}) > d$. Thus proving $VC(\mathcal{H}) \leq log_2|\mathcal{H}|$. \\
+
+From part b we showed that there are at most $2^m(n + 1)^n$ possible networks for a network layout giving $|\mathcal{H}|$ is at most $2^m(n + 1)^n$.
+
+$$log_2(2^m(n+1)^n) = m + (n * log(n)) + \frac{1}{log(2)}$$
+
+Showing the VC($\mathcal{H}$) $\leq O(m + nlog(n))$. Thus we can see $VC(\mathcal{H})$ is upper-bounded by $O((m+n)\log ⁡n)$.
 } }
 
 \question{Problem 12 - Importance of Random Initialization}
@@ -281,8 +301,78 @@ In this exercise, we make a simple observation that width isn't as "necessary" a
 Consider a network with one (real valued) input $x$, connected to $n$ nodes in a hidden layer, which are in turn connected to the output node, denoted $f$. Show that one can construct a depth $n + O(1)$ network, with just 3 nodes in each layer, to compute the same $f$. [HINT: three nodes allow you to "carry over" the input; ReLU's are important for this.]
 
 \fbox{ \parbox{1\linewidth}{
+For ease of explanation I will describe the equivalent networks with a concrete example of $n = 3$ (we will be able to see how this generalizes for all $n$). First let's visualize a network with one (real valued) input $x$, connected to 3 nodes in a hidden layer, which are connected to a final output node $f$. 
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+
+  \tikzstyle{every state}=[fill=white,draw=none,text=black]
+
+  \node[]                     (A)                    {$x$};
+  \node[draw, circle]         (B) [above right of=A] {$y_1$};
+  \node[draw, circle]         (C) [right of=A] {$y_2$};
+  \node[draw, circle]         (D) [below right of=A] {$y_3$};
+  \node[]					  (E) [right of=C] {$f$};
+
+
+  \path (A) edge              node {$w_1^{(1)}$} (B)
+  		(A) edge			  node {$w_2^{(1)}$} (C)
+  		(A) edge			  node {$w_3^{(1)}$} (D)
+        (B) edge              node {$w_1^{(2)}$} (E)
+        (C) edge              node {$w_2^{(2)}$} (E)
+        (D) edge              node {$w_3^{(2)}$} (E);
+\end{tikzpicture}
+\caption{A network with n = 3 nodes in a hidden layer}
+\end{figure}
+
+Where $y_1$, $y_2$, $y_3$, and $f$ are defined as such
+
+$$y_1(x) = max \{ 0,w_1^{(1)}x + b_1 \} \ \ \ \ y_2(x) = max \{ 0,w_2^{(1)}x + b_2 \} \ \ \ \ y_3(x) = max \{ 0,w_3^{(1)}x + b_3 \}$$
+$$f(y_1, y_2, y_3) = max \{ 0,w_1^{(2)}y_1 + w_2^{(2)}y_2 + w_3^{(3)}y_3 + b \}$$
+
+We will show that an identical network can be formed with a depth of n + O(1) and with 3 nodes in each layer where $n = 3$ for this example. 
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+
+  \tikzstyle{every state}=[fill=white,draw=none,text=black]
+
+  \node[]                     (A)                    {$x$};
+  \node[draw, circle]         (B) [above right of=C] {$0$};
+  \node[draw, circle]       (F) [right of=B] {$0$};
+  \node[draw, circle]       (G) [right of=F] {$0$};
+  \node[draw, circle]         (C) [right of=A] {$y_1$};
+  \node[draw, circle]         (H) [right of=C] {$y_2$};
+  \node[draw, circle]         (D) [right of=H] {$y_3$};
+  \node[draw, circle]         (I) [below right of=C] {$0$};
+  \node[draw, circle]         (J) [right of=I] {$0$};
+  \node[draw, circle]         (K) [right of=J] {$0$};
+  \node[]         (L) [right of=K] {$g$};
+
+  \path (A) edge              node {$1$} (B)
+  		(B) edge              node {$1$} (F)
+  		(F) edge              node {$1$} (G)
+  		(A) edge              node {$w_1^{(1)}$} (C)
+  		(I) edge              node {$1$} (J)
+  		(J) edge              node {$1$} (K)
+  		(K) edge              node {$1$} (L)
+  		(B) edge              node {$w_2^{(1)}$} (H)
+  		(F) edge              node {$w_3^{(1)}$} (D)
+  		(H) edge              node {$w_2^{(2)}$} (J)
+  		(D) edge              node {$w_3^{(3)}$} (K)
+  		(C) edge              node {$w_1^{(2)}$} (I);
+        
+\end{tikzpicture}
+\caption{An identical network with a depth of 3 + O(1) with 3 nodes at each layer.}
+\end{figure}
+
+Where the input, weights, and functions are defined the same as they are in the original network. A node denoted with a $0$ indicates a threshold that passes on the input regardless of it's value. As such, the top node in each layer "carries over" the initial input $x$. The middle node in each layer applies the functions $y_1$, $y_2$, and $y_3$ to the initial input $x$ (similar to the initial networks single hidden layer). The bottom node in each layer keeps a "running sum" of each of the previous layers. Finally the sum of the $n$ layers is fed into a final ReLU $g$ that applies a bias $b$ (the same bias from $f$ in the original network) to it's single input. This produces an identical output as the original network.
 } }
+
 
 \newpage
 

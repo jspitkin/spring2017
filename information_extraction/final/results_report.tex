@@ -1,0 +1,115 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Sectioned Essay
+% LaTeX Template
+% Version 1.0 (3/8/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original Author:
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, 11pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
+
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{graphicx} % Required for including pictures
+\usepackage{wrapfig} % Allows in-line images
+\usepackage{float}
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
+
+\renewcommand{\maketitle}{ % Customize the title - do not edit title and author name here, see the TITLE block below
+\begin{flushright} % Right align
+{\LARGE\@title} % Increase the font size of the title
+
+\vspace{50pt} % Some vertical space between the title and author name
+
+{\large\@author} % Author name
+\\\@date % Date
+
+\vspace{40pt} % Some vertical space between the author block and abstract
+\end{flushright}
+}
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{Basic System - Reading Comprehension on Short Passages for Question Answering}\\ % Title
+} % Subtitle
+
+\author{\textsc{Jake Pitkin} % Author
+\\{\textit{CS 6390 - Information Extraction}}} % Institution
+
+\date{\today} % Date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT AND KEYWORDS
+%----------------------------------------------------------------------------------------
+
+%\renewcommand{\abstractname}{Summary} % Uncomment to change the name of the abstract to something else
+
+
+%----------------------------------------------------------------------------------------
+%	ESSAY BODY
+%---------------------------------------------------------------------------------------
+ 
+%------------------------------------------------
+
+\section*{Evaluation Results}
+
+Below is a table of the accuracy and F1-score for various systems and benchmarks. To evaluate my system, I used only one of the sixty categories of documents and Q/A's for time reasons (would take multiple days train a system across all the training examples).
+
+\begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c | c | c |}
+\hline
+Approach & Dataset & Accuracy & F1-Score\\
+\hline
+Random Guess & Dev & 1.1\% & 4.1\%\\ \hline
+My Basic System  & Dev & 5.8\% & 10.7\%\\ \hline
+\textbf{My Final System} & \textbf{Dev} & \textbf{14.57\%} & \textbf{21.64\%} \\ \hline
+State-of-the-art & Test & 76.92\% & 84\% \\ \hline
+Human Baseline & Dev & 80.3\% & 90.5\%\\ \hline
+\end{tabular}}
+\caption{Bold indicating my current system. Approaches in ascending order based on performance.}
+\end{table}
+
+Additionally I wanted to evaluate how well the heuristic of using the noun phrases in the document as the candidate pool of answers for a question. I took 2,000 questions and computed how often one of the possible answers to a question ended up in the candidate pool.
+
+\begin{table}[H]
+\centering
+{\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{| c | c | c |}
+\hline
+Questions & Answers Found & Percent\\
+\hline
+2,000 & 1,105 & 55.25\%  \\ \hline
+\end{tabular}}
+\end{table}
+
+This approach puts a low ceiling on the possible recall of my system. A better approach to finding candidates would be worth exploring.
+
+\end{document}

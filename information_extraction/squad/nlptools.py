@@ -6,6 +6,7 @@ from nltk.parse.stanford import StanfordDependencyParser
 from nltk.stem.porter import *
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.tag.stanford import StanfordNERTagger
 
 def download_nltk_resources():
     """There is a known bug currently with nltk and ssl verification. This is a workaround via stackoverflow."""
@@ -156,6 +157,7 @@ def set_w_word_features(candidates):
         for word in candidate['phrase']:
             if word[0].isupper():
                 candidate['contains-capital'] = 1
+        # Set a contains a digit feature
         candidate['w-word-who'] = 0
         candidate['w-word-what'] = 0
         candidate['w-word-where'] = 0
@@ -238,17 +240,38 @@ def cull_candidate_list(candidate_list):
     bad_candidates = set(['.', 'a', 'an', 'the', 'he', 'she', 'it', 'them', 'mr.', 'mr', 'mrs.', 'mrs', 'who'])
     new_candidate_list = []
     for entry in candidate_list:
-        entry_words = entry['phrase'].split()
+        entry_words = entry.split()
         new_entry = ""
         for entry_word in entry_words:
             if entry_word not in bad_candidates:
                 new_entry = new_entry + entry_word + " "
-        entry['phrase'] = new_entry.strip()
-        if entry['phrase'] != '':
+        entry = new_entry.strip()
+        if entry != '':
             new_candidate_list.append(entry)
 
     return new_candidate_list
 
-def combine_nps(nps):
-    # heuristic - two consecutive NPs that are both capitalized are one NP
-    return 5
+def set_ner_features(candidates):
+    path_to_model = "./lib/english.all.3class.nodistsim.crf.ser.gz"
+    path_to_jar = "./lib/stanford-ner.jar"
+    st = StanfordNERTagger(path_to_model, path_to_jar)
+    for candidate in candidates:
+        ner_tags = st.tag(tokenize(candidate['phrase']))
+        candidate['is-other'] = 1
+        candidate['is-location'] = 0
+        candidate['is-organization'] = 0
+        candidate['is-person'] = 0
+        for tag in ner_tags:
+            if tag[1] == 'LOCATION':
+                candidate['is-location'] = 1
+                candidate['is-other'] = 0
+                break
+            if tag[1] == 'ORGANIZATION':
+                candidate['is-organization'] = 1
+                candidate['is-other'] = 0
+                break
+            if tag[1] == 'PERSON':
+                candidate['is-person'] = 1
+                candidate['is-other'] = 0
+                break
+            

@@ -4,13 +4,14 @@ import nlptools
 import sys
 import re
 from random import shuffle
+from random import randint
 
 vectorizer = None
 tfidf_matrix = None
 
 def main():
     'Program entry point'
-    global vectorizer, tfidf_matrix, corpora
+    global vectorizer, tfidf_matrix
 
     if len(sys.argv) != 4:
         print_usage();
@@ -20,8 +21,7 @@ def main():
     dev_set_path = sys.argv[2]
     prediction_path = sys.argv[3]
 
-    #train = ioutil.read_examples_from_file(train_set_path)
-    train = ioutil.read_examples_from_file(dev_set_path)
+    train = ioutil.read_examples_from_file(train_set_path)
     dev = ioutil.read_examples_from_file(dev_set_path)
 
     # Split the training examples based on context
@@ -36,19 +36,28 @@ def main():
     for key in context_keys:
         corpora[key] = train['contexts'][key]['paragraph']
 
+    sentences = nlptools.split_to_sentences(article)
+    total_nps = []
+    for sentence in sentences:
+        nps = nlptools.get_noun_phrases(sentence)
+        nps = nlptools.remove_common_words(nps)
+        nps = nlptools.cull_candidate_list(nps)
+        total_nps.extend(nps)
+    print(total_nps)
+
     tfidf_matrix, vectorizer  = nlptools.get_tfidf_vectors(list(corpora.values()))
 
     # For each context, create feature vectors for each relevant example
     training_vectors = []
     for key, context in corpora.items():
         print('training:', key)
-        #training_vectors.extend(feature_vectors_for_context(key, context, examples))
+        training_vectors.extend(feature_vectors_for_context(key, context, examples))
 
     for training_vector in training_vectors:
         del training_vector[0]
 
     # Write the feature vectors to file
-    #ioutil.write_feature_vectors('train_vectors.txt', training_vectors)
+    ioutil.write_feature_vectors('train_vectors.txt', training_vectors)
 
     # Train a logistic regression model
     model = lr.train_even()
@@ -144,7 +153,7 @@ def feature_vectors_for_example(context, example):
     candidates = nlptools.cull_candidate_list(candidates)
 
     # Create features for each of the candidates based on sentence context
-    # nlptools.set_context_features(candidates, sentences)
+    nlptools.set_context_features(candidates, sentences)
     nlptools.set_question_features(candidates, sentences, vectorizer, tfidf_matrix)
     nlptools.set_w_word_features(candidates)
 
@@ -174,18 +183,19 @@ def feature_vectors_for_context(key, context, examples):
     # Create a copy of each candidate to create an example for each question
     extended_candidates = []
     for candidate in candidates:
-        for example in examples[key]:
+        #for example in examples[key]:
             # If there is overlap with this candidate and the true answer, ignore this neg example
-            discard_candidate = False
-            for answer in example['possible_answers']:
-                if len(set.intersection(set(candidate['phrase'].split()), set(answer['text']))) > 0:
-                    discard_candidate = True
-            if discard_candidate:
+        example = examples[key][randint(0, len(examples[key]) - 1)]
+        discard_candidate = False
+        for answer in example['possible_answers']:
+            if len(set.intersection(set(candidate['phrase'].split()), set(answer['text']))) > 0:
+                discard_candidate = True
+        if discard_candidate:
                 continue
-            new_candidate = candidate.copy()
-            new_candidate['question'] = example['question']
-            new_candidate['context_key'] = example['context_key']
-            extended_candidates.append(new_candidate)
+        new_candidate = candidate.copy()
+        new_candidate['question'] = example['question']
+        new_candidate['context_key'] = example['context_key']
+        extended_candidates.append(new_candidate)
 
     # Create candidates from the golden labeled answers
     for example in examples[key]:
@@ -198,7 +208,7 @@ def feature_vectors_for_context(key, context, examples):
                 prev_sentence = sentence
 
     # Create features for each of the candidates based on sentence context
-    #nlptools.set_context_features(candidates, sentences)
+    nlptools.set_context_features(extended_candidates, sentences)
     nlptools.set_question_features(extended_candidates, sentences, vectorizer, tfidf_matrix)
     nlptools.set_w_word_features(extended_candidates)
 

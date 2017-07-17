@@ -61,9 +61,12 @@ def train_even():
     for index in shuffled_indices:
         train_vectors.append(balanced_count_vectors[index])
         train_labels.append(balanced_count_labels[index])
-        print('label:', balanced_count_labels[index], 'vector:', balanced_count_vectors[index])
     X = np.array(train_vectors)
     y = np.array(train_labels)
+
+    print('# of examples:', len(train_vectors))
+    print('# of positive:', pos_count)
+    print('# of negative:', neg_samples)
 
     model = LogisticRegression()
     model.fit(X, y)
